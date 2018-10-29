@@ -697,8 +697,6 @@ class SimulationGUI(QDialog):
 		self.setWindowTitle("SIREN")
 		#self.changeStyle('Windows')
 
-		self.plotter = None 
-		self.thread = None
 
 		self.threadpool = QThreadPool()
 		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
@@ -731,9 +729,9 @@ class SimulationGUI(QDialog):
 		self._dynamic_ax2.clear()
 		axis_font = {'fontname':'Arial', 'size':'8'}
 
-		self._dynamic_ax2.set_xlabel("Days", **axis_font)
-		self._dynamic_ax2.set_ylabel("EPC", **axis_font)
-		self._dynamic_ax2.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
+		self._dynamic_ax1.set_xlabel("Days", **axis_font)
+		self._dynamic_ax1.set_ylabel("EPC", **axis_font)
+		self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
 
 		layout = QGridLayout()
 		layout.addWidget(dynamic_canvas1, 0, 0)
@@ -752,9 +750,7 @@ class SimulationGUI(QDialog):
 		comboBoxAlgorithms.setSelectionMode(QAbstractItemView.MultiSelection)
 		comboBoxAlgorithmsLabel = QLabel("&Rec algorithms (scroll for more):")
 		comboBoxAlgorithmsLabel.setBuddy(comboBoxAlgorithms)
-		comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", "Random", "UserAttributeKNN","UserKNN",
-    "WRMF","MultiCoreBPRMF", "SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", "BPRSLIM",
-    "LeastSquareSLIM"])
+		comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", "Random", "UserAttributeKNN","UserKNN","WRMF","MultiCoreBPRMF", "SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", "BPRSLIM","LeastSquareSLIM"])
 
 		spinBoxSalience = QSpinBox(self.topLeftGroupBox)
 		spinBoxSalienceLabel = QLabel("&Rec salience:")
@@ -863,35 +859,43 @@ class SimulationGUI(QDialog):
 		maxVal = self.progressBar.maximum()
 		self.progressBar.setValue(progress_*100)
 
-		# Load diversity metrics data
-		df = pd.read_pickle(self.outfolder + "/metrics analysis.pkl")
+		if self.algorithm!="Control":
 
-		self._dynamic_ax1.clear()
-		self._dynamic_ax2.clear()
-		axis_font = {'fontname':'Arial', 'size':'8'}
+			# Load diversity metrics data
+			df = pd.read_pickle(self.outfolder + "/metrics analysis.pkl")
 
-		self._dynamic_ax1.set_xlabel("Days", **axis_font)
-		self._dynamic_ax1.set_ylabel("EPC", **axis_font)
-		self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
+			self._dynamic_ax1.clear()
+			self._dynamic_ax2.clear()
+			axis_font = {'fontname':'Arial', 'size':'8'}
 
-		# Shift the sinusoid as a function of time.
-		for algorithm in self.algorithms:
-			if algorithm=="Control":continue
-			y = df[algorithm]["EPC"]
-			x = [i for i in range(len(y))]
-			self._dynamic_ax1.plot(x, y, label=algorithm)
+			self._dynamic_ax1.set_xlabel("Days", **axis_font)
+			self._dynamic_ax1.set_ylabel("EPC", **axis_font)
+			self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
 
-			y = df[algorithm]["EPD"]
-			x = [i for i in range(len(y))]
-			self._dynamic_ax2.plot(x, y, label=algorithm)
+			self._dynamic_ax2.set_xlabel("Days", **axis_font)
+			self._dynamic_ax2.set_ylabel("EPD", **axis_font)
+			self._dynamic_ax2.set_title("Unexpectedness diversity measured using the Expected Profile Distance (EPD) metric of Vargas (2015).", **axis_font)
+
+			# Shift the sinusoid as a function of time.
+			print(self.algorithms)
+			for k, algorithm in enumerate(self.algorithms):
+				if algorithm=="Control":continue
+				y = np.array(df[algorithm]["EPC"])
+				x = np.array([i for i in range(len(y))])+k*0.1
+				yerror = df[algorithm]["EPCstd"]
+				self._dynamic_ax1.errorbar(x, y, yerr = yerror, label=algorithm)
+
+				y = df[algorithm]["EPD"]
+				x = [i for i in range(len(y))]
+				self._dynamic_ax2.plot(x, y, label=algorithm)
 
 
-		self._dynamic_ax1.legend()
-		self._dynamic_ax2.legend()
-		self._dynamic_ax1.figure.canvas.draw()
-		self._dynamic_ax1.figure.canvas.draw_idle()
-		self._dynamic_ax2.figure.canvas.draw()
-		self._dynamic_ax2.figure.canvas.draw_idle()
+			self._dynamic_ax1.legend()
+			self._dynamic_ax2.legend()
+			self._dynamic_ax1.figure.canvas.draw()
+			self._dynamic_ax1.figure.canvas.draw_idle()
+			self._dynamic_ax2.figure.canvas.draw()
+			self._dynamic_ax2.figure.canvas.draw_idle()
 
 
 	def print_output(self):
@@ -910,7 +914,7 @@ class SimulationGUI(QDialog):
 	def onStartButtonClicked(self):
 
 		# Initialize the simulation
-		settings = {"Number of active users per day": str(200),
+		settings = {"Number of active users per day": str(50),
 			"Days" : str(20), 
 			"seed": int(1),
 			"Recommender salience": str(5),
@@ -919,7 +923,7 @@ class SimulationGUI(QDialog):
 			"Number of recommended articles per day": str(5),
 			"Average read articles per day": str(6),
 			"Reading focus": float(0.8),
-			"Recommender algorithms": "Random,BPRMF",
+			"Recommender algorithms": "Random,ItemKNN,BPRMF",
 			"Overall topic weights": [0.2, 0.2, 0.2, 0.2, 0.2],
 			"Overall topic prominence": [0.2, 0.2, 0.2, 0.9, 0.2]}
 		self.initWithSettings(settings)
@@ -1115,7 +1119,7 @@ class SimulationGUI(QDialog):
 					#met.update({"Gini": metrics.computeGinis(self.SalesHistory,self.ControlHistory)})
 					for key in met.keys():
 						self.diversityMetrics[self.algorithm][key].append(met[key])
-						print(self.diversityMetrics)
+						
 
 				# # Show stats on screen and save json for interface
 				# printj(self.algorithm+": Exporting...")
