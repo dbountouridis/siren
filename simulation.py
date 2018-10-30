@@ -666,38 +666,45 @@ class SimulationGUI(QDialog):
 
 		self.originalPalette = QApplication.palette()
 
-		defaultPushButton = QPushButton("Start")
-		defaultPushButton.setDefault(True)
-		defaultPushButton.clicked.connect(self.onStartButtonClicked)
-
 		self.createTopLeftGroupBox()
 		self.createTopMiddleGroupBox()
 		self.createTopRightGroupBox()
-		self.createProgressBar()
+		self.createControlsGroupBox()
 		self.createFigures()
 
-		topLayout = QHBoxLayout()
-		topLabel = QLabel("A toolbox for simulating user interaction with personalized news recommendations in a typical online news environment.")
-		topLayout.addWidget(topLabel)
+		# Top layout with labels
+		topLayout = QGridLayout()
+		topLabel = QLabel("Recommender settings")
+		topLayout.addWidget(topLabel,  1, 0)
+		topLabel2 = QLabel("Article settings")
+		topLayout.addWidget(topLabel2,  1, 1)
+		topLabel3 = QLabel("User settings")
+		topLayout.addWidget(topLabel3,  1, 2)
+		topLayout.setRowStretch(1, 1)
+		topLayout.setColumnStretch(0, 1)
+		topLayout.setColumnStretch(1, 1)
+		topLayout.setColumnStretch(2, 1)
+
+		# Main layout
 		mainLayout = QGridLayout()
 		mainLayout.addLayout(topLayout, 0, 0, 1, 3)
-		mainLayout.addWidget(self.topLeftGroupBox, 1, 0)
-		mainLayout.addWidget(self.topMiddleGroupBox, 1, 1)
-		mainLayout.addWidget(self.topRightGroupBox, 1, 2)
-		mainLayout.addWidget(self.figures, 4, 0, 1, 3)
-		mainLayout.addWidget(self.progressBar, 3, 0, 1, 3)
-		mainLayout.addWidget(defaultPushButton, 2, 0, 1, 3)
-		mainLayout.setRowStretch(1, 1)
-		mainLayout.setRowStretch(2, 1)
-		mainLayout.setColumnStretch(0, 1)
-		mainLayout.setColumnStretch(1, 1)
-		mainLayout.setColumnStretch(2, 1)
+		mainLayout.addWidget(self.topLeftGroupBox, 1, 0 , 1 ,1)
+		mainLayout.addWidget(self.topMiddleGroupBox, 1, 1 ,1, 1)
+		mainLayout.addWidget(self.topRightGroupBox, 1, 2 ,1, 1 )
+		mainLayout.addWidget(self.controlsGroupBox, 2, 0, 1, 3)
+		mainLayout.addWidget(self.figures, 3, 0, 2, 3)
+		
+	
+		# mainLayout.setRowStretch(1, 1)
+		#mainLayout.setRowStretch(5, 2)
+		# mainLayout.setColumnStretch(0, 1)
+		# mainLayout.setColumnStretch(1, 1)
+		# mainLayout.setColumnStretch(2, 1)
 		self.setLayout(mainLayout)
 
+
 		self.setWindowTitle("SIREN")
-		#self.changeStyle('Windows')
-
-
+		
 		self.threadpool = QThreadPool()
 		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 		# self.timer = QTimer()
@@ -705,29 +712,47 @@ class SimulationGUI(QDialog):
 		# self.timer.timeout.connect(self.recurring_timer)
 		# self.timer.start()
 
-	# Progress bar
-	def createProgressBar(self):
+	# Controls
+	def createControlsGroupBox(self):
+
+		self.controlsGroupBox = QGroupBox()
+
+		self.startButton = QPushButton("Start")
+		self.startButton.setDefault(True)
+		self.startButton.clicked.connect(self.onStartButtonClicked)
+
 		self.progressBar = QProgressBar()
 		self.progressBar.setRange(0, 100)
 		self.progressBar.setValue(0)
+		progressLabel = QLabel("&Progress:")
+		progressLabel.setBuddy(self.progressBar)
 
-		#timer = QTimer(self)
-		#timer.timeout.connect(self.advanceProgressBar)
-		#timer.start(1000)
+		layout = QVBoxLayout()
+		layout.addWidget(self.startButton)
+		layout.addWidget(progressLabel)
+		layout.addWidget(self.progressBar)
+	
+		layout.addStretch(1)
+		self.controlsGroupBox.setLayout(layout)
 
 	# Figures
 	def createFigures(self):
 		self.figures = QGroupBox("Figures")
 
-		dynamic_canvas1 = FigureCanvas(Figure(figsize=(5, 4)))
+		dynamic_canvas1 = FigureCanvas(Figure(figsize=(5, 4),dpi = 100, tight_layout=True))
 		self._dynamic_ax1 = dynamic_canvas1.figure.subplots()
 
-		dynamic_canvas2 = FigureCanvas(Figure(figsize=(5, 4)))
+		dynamic_canvas2 = FigureCanvas(Figure(figsize=(5, 4), dpi = 100, tight_layout=True))
 		self._dynamic_ax2 = dynamic_canvas2.figure.subplots()
+
+		
 
 		self._dynamic_ax1.clear()
 		self._dynamic_ax2.clear()
 		axis_font = {'fontname':'Arial', 'size':'8'}
+
+		for item in ([self._dynamic_ax1.title, self._dynamic_ax1.xaxis.label, self._dynamic_ax1.yaxis.label] + self._dynamic_ax1.get_xticklabels() + self._dynamic_ax1.get_yticklabels()):
+				item.set_fontsize(8)
 
 		self._dynamic_ax1.set_xlabel("Days", **axis_font)
 		self._dynamic_ax1.set_ylabel("EPC", **axis_font)
@@ -736,113 +761,189 @@ class SimulationGUI(QDialog):
 		layout = QGridLayout()
 		layout.addWidget(dynamic_canvas1, 0, 0)
 		layout.addWidget(dynamic_canvas2, 0, 1)
-		layout.setRowStretch(1, 1)
-		layout.setRowStretch(2, 1)
-		layout.setColumnStretch(0, 1)
-		layout.setColumnStretch(1, 1)
+		#layout.setRowStretch(0, 1)
+		#layout.setRowStretch(1, 1)
+		#layout.setColumnStretch(0, 1)
+		#layout.setColumnStretch(1, 1)
 		self.figures.setLayout(layout)
 
 	# Recommendation settings
 	def createTopLeftGroupBox(self):
-		self.topLeftGroupBox = QGroupBox("Recommender settings")
+		self.topLeftGroupBox = QGroupBox()
 
-		comboBoxAlgorithms = QListWidget(self.topLeftGroupBox)
-		comboBoxAlgorithms.setSelectionMode(QAbstractItemView.MultiSelection)
+		self.comboBoxAlgorithms = QListWidget(self.topLeftGroupBox)
+		self.comboBoxAlgorithms.setSelectionMode(QAbstractItemView.MultiSelection)
 		comboBoxAlgorithmsLabel = QLabel("&Rec algorithms (scroll for more):")
-		comboBoxAlgorithmsLabel.setBuddy(comboBoxAlgorithms)
-		comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", "Random", "UserAttributeKNN","UserKNN","WRMF","MultiCoreBPRMF", "SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", "BPRSLIM","LeastSquareSLIM"])
+		comboBoxAlgorithmsLabel.setBuddy(self.comboBoxAlgorithms)
+		self.comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", "Random", "UserAttributeKNN","UserKNN","WRMF","MultiCoreBPRMF", "SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", "BPRSLIM","LeastSquareSLIM"])
 
-		spinBoxSalience = QSpinBox(self.topLeftGroupBox)
+		self.spinBoxSalience = QSpinBox(self.topLeftGroupBox)
 		spinBoxSalienceLabel = QLabel("&Rec salience:")
-		spinBoxSalienceLabel.setBuddy(spinBoxSalience)
-		spinBoxSalience.setValue(5)
+		spinBoxSalienceLabel.setBuddy(self.spinBoxSalience)
+		self.spinBoxSalience.setValue(5)
 
-		spinBoxDays = QSpinBox(self.topLeftGroupBox)
+		self.spinBoxDays = QSpinBox(self.topLeftGroupBox)
 		spinBoxDaysLabel = QLabel("&Days:")
-		spinBoxDaysLabel.setBuddy(spinBoxDays)
-		spinBoxDays.setValue(20)
+		spinBoxDaysLabel.setBuddy(self.spinBoxDays)
+		self.spinBoxDays.setValue(20)
 
-		spinBoxRecArticles = QSpinBox(self.topLeftGroupBox)
+		self.spinBoxRecArticles = QSpinBox(self.topLeftGroupBox)
 		spinBoxRecArticlesLabel = QLabel("&Recommended articles per day:")
-		spinBoxRecArticlesLabel.setBuddy(spinBoxRecArticles)
-		spinBoxRecArticles.setValue(5)
+		spinBoxRecArticlesLabel.setBuddy(self.spinBoxRecArticles)
+		self.spinBoxRecArticles.setValue(5)
 
 		layout = QVBoxLayout()
 		layout.addWidget(comboBoxAlgorithmsLabel)
-		layout.addWidget(comboBoxAlgorithms)
+		layout.addWidget(self.comboBoxAlgorithms)
 		layout.addWidget(spinBoxSalienceLabel)
-		layout.addWidget(spinBoxSalience)
+		layout.addWidget(self.spinBoxSalience)
 		layout.addWidget(spinBoxDaysLabel)
-		layout.addWidget(spinBoxDays)
+		layout.addWidget(self.spinBoxDays)
 		layout.addWidget(spinBoxRecArticlesLabel)
-		layout.addWidget(spinBoxRecArticles)
+		layout.addWidget(self.spinBoxRecArticles)
 
 		layout.addStretch(1)
 		self.topLeftGroupBox.setLayout(layout)
 
 	# Article settings
 	def createTopMiddleGroupBox(self):
-		self.topMiddleGroupBox = QGroupBox("Article settings")
 
-		spinBoxPubArticles = QSpinBox(self.topMiddleGroupBox)
-		spinBoxPubArticles.setRange(10,500)
-		spinBoxPubArticles.setValue(100)
-		spinBoxPubArticlesLabel = QLabel("&Published articles per day:")
-		spinBoxPubArticlesLabel.setBuddy(spinBoxPubArticles)
 
-		sliderEnt = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
-		sliderEnt.setRange(10, 100)
-		sliderEnt.setValue(20)
+		self.topMiddleGroupBox = QTabWidget()
+		#self.topMiddleGroupBox.setSizePolicy(QSizePolicy.Preferred,QSizePolicy.Ignored)
+		#self.topMiddleGroupBox.heightForWidth()
+
+		self.sliderEnt = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
 		sliderEntLabel = QLabel("&Entertainment:")
-		sliderEntLabel.setBuddy(sliderEnt)
+		sliderEntLabel.setBuddy(self.sliderEnt)
 
-		sliderBus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
-		sliderBus.setValue(40)
+		self.sliderBus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
 		sliderBusLabel = QLabel("&Business:")
-		sliderBusLabel.setBuddy(sliderBus)
+		sliderBusLabel.setBuddy(self.sliderBus)
 
-		layout = QVBoxLayout()
-		#layout.addWidget(defaultPushButton)
-		layout.addWidget(spinBoxPubArticlesLabel)
-		layout.addWidget(spinBoxPubArticles)
-		layout.addWidget(sliderEntLabel)
-		layout.addWidget(sliderEnt)
-		layout.addWidget(sliderBusLabel)
-		layout.addWidget(sliderBus)
+		self.sliderPol = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPolLabel = QLabel("&Politics:")
+		sliderPolLabel.setBuddy(self.sliderPol)
 
-		layout.addStretch(1)
-		self.topMiddleGroupBox.setLayout(layout)
+		self.sliderSpo = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderSpoLabel = QLabel("&Sports:")
+		sliderSpoLabel.setBuddy(self.sliderSpo)
+
+		self.sliderTec = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderTecLabel = QLabel("&Sports:")
+		sliderTecLabel.setBuddy(self.sliderTec)
+
+		self.sliderPromEnt = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPromEntLabel = QLabel("&Entertainment:")
+		sliderPromEntLabel.setBuddy(self.sliderPromEnt)
+
+		self.sliderPromBus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPromBusLabel = QLabel("&Business:")
+		sliderPromBusLabel.setBuddy(self.sliderPromBus)
+
+		self.sliderPromPol = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPromPolLabel = QLabel("&Politics:")
+		sliderPromPolLabel.setBuddy(self.sliderPromPol)
+
+		self.sliderPromSpo = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPromSpoLabel = QLabel("&Sports:")
+		sliderPromSpoLabel.setBuddy(self.sliderPromSpo)
+
+		self.sliderPromTec = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		sliderPromTecLabel = QLabel("&Sports:")
+		sliderPromTecLabel.setBuddy(self.sliderPromTec)
+
+		# Set values
+		for i,widget  in enumerate([self.sliderPromEnt, self.sliderPromBus,  self.sliderPromPol, self.sliderPromSpo,  self.sliderPromTec]):
+			widget.setMinimum(1)
+			widget.setMaximum(10)
+			widget.setTickInterval(1)
+			widget.setSingleStep(1) # arrow-key step-size
+			widget.setPageStep(1) # mouse-wheel/page-key step-size
+			if i!=2: widget.setValue(2)
+			else:  widget.setValue(9) # politics
+
+		for i,widget in enumerate([self.sliderEnt,self.sliderBus, self.sliderPol, self.sliderSpo, self.sliderTec]):
+			widget.setRange(10, 100)
+			widget.setValue(20)
+
+		# Add to layout
+		tab1 = QWidget()
+		tab1hbox = QVBoxLayout()
+		tab1hbox.setContentsMargins(5, 5, 5, 5)
+		tab1Text = QLabel("The likelihood of an article to belong to a topic:")
+		tab1hbox.addWidget(tab1Text)
+	
+		for widget  in [sliderEntLabel, self.sliderEnt, sliderBusLabel, 
+		self.sliderBus, sliderPolLabel, self.sliderPol, sliderSpoLabel,
+		 self.sliderSpo, sliderTecLabel, self.sliderTec]:
+			tab1hbox.addWidget(widget)
+		tab1hbox.addStretch(0)
+		tab1.setLayout(tab1hbox)
+
+		tab2 = QWidget()
+		tab2hbox = QVBoxLayout()
+		tab2hbox.setContentsMargins(5, 5, 5, 5)
+		tab2Text = QLabel("The likelihood of an article of a certain topic to appear in the news headlines:")
+		tab2hbox.addWidget(tab2Text)
+
+		for widget  in [sliderPromEntLabel, self.sliderPromEnt, sliderPromBusLabel, 
+		self.sliderPromBus, sliderPromPolLabel, self.sliderPromPol, sliderPromSpoLabel,
+		 self.sliderPromSpo, sliderPromTecLabel, self.sliderPromTec]:
+			tab2hbox.addWidget(widget)
+		tab2hbox.addStretch(0)
+		tab2.setLayout(tab2hbox)		
+
+		tab3 = QWidget()
+		tab3hbox = QVBoxLayout()
+		tab3hbox.setContentsMargins(5, 5, 5, 5)
+
+		self.spinBoxPubArticles = QSpinBox(self.topMiddleGroupBox)
+		self.spinBoxPubArticles.setRange(10,500)
+		self.spinBoxPubArticles.setValue(100)
+		spinBoxPubArticlesLabel = QLabel("&Published articles per day:")
+		spinBoxPubArticlesLabel.setBuddy(self.spinBoxPubArticles)
+
+		tab3hbox.addWidget(spinBoxPubArticlesLabel)
+		tab3hbox.addWidget(self.spinBoxPubArticles)
+		tab3hbox.addStretch(0)
+		tab3.setLayout(tab3hbox)	
+
+		self.topMiddleGroupBox.addTab(tab3, "&General")
+		self.topMiddleGroupBox.addTab(tab1, "&Topic weights")
+		self.topMiddleGroupBox.addTab(tab2, "&Topic prominence")
+
 
 	# User settings
 	def createTopRightGroupBox(self):
-		self.topRightGroupBox = QGroupBox("User settings")
+		self.topRightGroupBox = QGroupBox()
 
-		spinBoxUsers = QSpinBox(self.topRightGroupBox)
-		spinBoxUsers.setRange(10,500)
-		spinBoxUsers.setValue(100)
+		self.spinBoxUsers = QSpinBox(self.topRightGroupBox)
+		self.spinBoxUsers.setRange(10,500)
+		self.spinBoxUsers.setValue(100)
 		spinBoxUsersLabel = QLabel("&Active users per day:")
-		spinBoxUsersLabel.setBuddy(spinBoxUsers)
+		spinBoxUsersLabel.setBuddy(self.spinBoxUsers)
 
-		spinBoxUsersArticles = QSpinBox(self.topRightGroupBox)
-		spinBoxUsersArticles.setRange(1,50)
-		spinBoxUsersArticles.setValue(6)
+		self.spinBoxUsersArticles = QSpinBox(self.topRightGroupBox)
+		self.spinBoxUsersArticles.setRange(1,50)
+		self.spinBoxUsersArticles.setValue(6)
 		spinBoxUsersArticlesLabel = QLabel("&Average read articles per day:")
-		spinBoxUsersArticlesLabel.setBuddy(spinBoxUsersArticles)
+		spinBoxUsersArticlesLabel.setBuddy(self.spinBoxUsersArticles)
 
-		sliderFocus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
-		sliderFocus.setRange(5, 100)
-		sliderFocus.setValue(80)
+		self.sliderFocus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
+		self.sliderFocus.setRange(5, 100)
+		self.sliderFocus.setValue(80)
 		sliderFocusLabel = QLabel("&Reading focus:")
-		sliderFocusLabel.setBuddy(sliderFocus)
+		sliderFocusLabel.setBuddy(self.sliderFocus)
 
 		layout = QVBoxLayout()
 		#layout.addWidget(defaultPushButton)
 		layout.addWidget(spinBoxUsersLabel)
-		layout.addWidget(spinBoxUsers)
+		layout.addWidget(self.spinBoxUsers)
 		layout.addWidget(spinBoxUsersArticlesLabel)
-		layout.addWidget(spinBoxUsersArticles)
+		layout.addWidget(self.spinBoxUsersArticles)
 		layout.addWidget(sliderFocusLabel)
-		layout.addWidget(sliderFocus)
+		layout.addWidget(self.sliderFocus)
 
 		layout.addStretch(1)
 		self.topRightGroupBox.setLayout(layout)
@@ -854,7 +955,7 @@ class SimulationGUI(QDialog):
 	"""
 
 	def progress_fn(self, progress_):
-		print(progress_, " done")
+		
 		curVal = self.progressBar.value()
 		maxVal = self.progressBar.maximum()
 		self.progressBar.setValue(progress_*100)
@@ -909,25 +1010,48 @@ class SimulationGUI(QDialog):
 			Empty
 		"""
 
+		alert = QMessageBox()
+		alert.setText('Simulation complete!')
+		alert.exec_()
+
+		# Activate button
+		self.startButton.setEnabled(True)
+		self.startButton.setText("Start")
+		self.startButton.repaint()
 		return False
 
 	def onStartButtonClicked(self):
+		# If no recommenders have been selected
+		if len(self.comboBoxAlgorithms.selectedItems())==0:
+			alert = QMessageBox()
+			alert.setText('Please select at least one recommendation algorithm.')
+			alert.exec_()
+			return False
+
+		# Deactivate button
+		self.startButton.setEnabled(False)
+		self.startButton.setText("Running...")
+		self.startButton.repaint()
 
 		# Initialize the simulation
-		settings = {"Number of active users per day": str(50),
-			"Days" : str(20), 
+		settings = {"Number of active users per day": self.spinBoxUsers.value(),
+			"Days" : self.spinBoxDays.value(), 
 			"seed": int(1),
-			"Recommender salience": str(5),
-			"Number of published articles per day": str(100),
+			"Recommender salience": self.spinBoxSalience.value(),
+			"Number of published articles per day": self.spinBoxPubArticles.value(),
 			"outfolder": "temp",
-			"Number of recommended articles per day": str(5),
-			"Average read articles per day": str(6),
-			"Reading focus": float(0.8),
-			"Recommender algorithms": "Random,ItemKNN,BPRMF",
-			"Overall topic weights": [0.2, 0.2, 0.2, 0.2, 0.2],
-			"Overall topic prominence": [0.2, 0.2, 0.2, 0.9, 0.2]}
+			"Number of recommended articles per day": self.spinBoxRecArticles.value(),
+			"Average read articles per day": self.spinBoxUsersArticles.value(),
+			"Reading focus": float(self.sliderFocus.value()/100),
+			"Recommender algorithms": [str(item.text()) for item in self.comboBoxAlgorithms.selectedItems()],
+			"Overall topic weights": [float(i.value()/100) for i in [self.sliderEnt,  self.sliderBus, self.sliderPol, self.sliderSpo, self.sliderTec]],
+			"Overall topic prominence": [float(i.value()/10) for i in [self.sliderPromEnt,  self.sliderPromBus, self.sliderPromPol, self.sliderPromSpo, self.sliderPromTec]]}
+		
+		# Initialize with settings
+		print(settings)
 		self.initWithSettings(settings)
 
+		
 		# Pass the function to execute
 		worker = Worker(self.runSimulation) # Any other args, kwargs are passed to the run function
 		worker.signals.result.connect(self.print_output)
@@ -1134,10 +1258,7 @@ class SimulationGUI(QDialog):
 					ControlU = copy.deepcopy(self.U)
 					ControlI = copy.deepcopy(self.I)
 					ControlD = self.D.copy()  # Start from the control distances between items and users
-					ControlHistory = self.SalesHistory.copy()  # We use a copy of th
-
-
-			
+					ControlHistory = self.SalesHistory.copy()  # We use a copy of th		
 				
 	def plot2D(self, drift = False, output = "initial-users-products.pdf", storeOnly = True):
 		""" Plotting the users-items on the attribute space.
@@ -1238,7 +1359,7 @@ class SimulationGUI(QDialog):
 		self.outfolder = settings["outfolder"]
 		self.seed = int(settings["seed"])
 		self.n = int(settings["Number of recommended articles per day"])
-		self.algorithms = ['Control'] + settings["Recommender algorithms"].split(",")
+		self.algorithms = ['Control'] + settings["Recommender algorithms"]
 		self.diversityMetrics = {}  # Holder for diversity metrics (means + std)
 		for algorithm in self.algorithms:
 			self.diversityMetrics.update({algorithm:{}})
