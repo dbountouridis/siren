@@ -114,10 +114,6 @@ def standardize(num, precision = 2):
 	if precision == 4:
 		return float("%.4f"%(num))
 
-def printj(text, comments=""):
-	json = {"action":text,"comments":comments}
-	print(json)
-
 def euclideanDistance(A,B):
 	""" Compute the pairwise distance between arrays of (x,y) points.
 
@@ -365,16 +361,6 @@ class Users(object):
 		self.X[user].append(x)
 		self.Y[user].append(y)
 
-	def showSettings(self):
-		""" A simple function to print most of the attributes of the class.
-
-		"""
-
-		variables = [(key,type(self.__dict__[key])) for key in self.__dict__.keys() if (type(self.__dict__[key]) is str or type(self.__dict__[key]) is float or type(self.__dict__[key]) is int )]
-
-		Json={ key: self.__dict__[key] for key,tp in variables }
-		print(json.dumps(Json, sort_keys=True, indent=4))
-
 class Items(object):
 	""" The class for modeling the items' content (items) and prominence.
 
@@ -427,7 +413,6 @@ class Items(object):
 		# Apply GMM on items/articles from the BBC data
 		R, S = [5,1,6,7], [5,2,28,28]
 		r = int(random.random()*4)
-		printj("Item space projection selected:",R[r])
 		(X,labels,topicClasses) = pickle.load(open('BBC data/t-SNE-projection'+str(R[r])+'.pkl','rb'))
 		gmm = GaussianMixture(n_components=5, random_state=S[r]).fit(X)
 		
@@ -536,45 +521,6 @@ class Items(object):
 			indeces = np.where(self.ItemsClass==c)[0]
 			self.ItemsInitialProminence[indeces] = Z[category]	
 
-		# # plotting
-		# min_= np.min([len(Z[i]) for i in Z.keys()])
-		# x = []
-		# for k in Z.keys():
-		# 	x.append(Z[k][:min_])
-		# print(np.array(x).T)
-		# # set sns context
-		# sns.set_context("notebook", font_scale=2, rc={"lines.linewidth": 1.0,'xtick.labelsize': 32, 'axes.labelsize': 32})
-		# sns.set(style="whitegrid")
-		# sns.set_style({'font.family': 'serif', 'font.serif': ['Times New Roman']})
-		# matplotlib.pyplot.rc('text', usetex=True)
-		# matplotlib.pyplot.rc('font', family='serif',size=20)
-		# flatui = sns.color_palette("husl", 8)
-		# #fig, ax = plt.subplots()
-		# fig, axes = matplotlib.pyplot.subplots(nrows=1, ncols=1, figsize=(8, 6))
-		# ax0= axes
-		# cmaps= ['Blues','Reds','Greens','Oranges','Greys']
-		# t = ["entertainment","business","sport","politics","tech"]
-		# colors = [sns.color_palette(cmaps[i])[-2] for i in range(len(t))]
-		# ax0.hist(x, 10, histtype='bar',stacked=True, color=colors,label=categories)
-		# ax0.legend(prop={'size': 18})
-		# for tick in ax0.xaxis.get_major_ticks():
-		# 	tick.label.set_fontsize(18)
-		# for tick in ax0.yaxis.get_major_ticks():
-		# 	tick.label.set_fontsize(0)
-		# ax0.set_xlabel("$z^0$",fontsize=20)
-		# ax0.set_ylabel("")
-		# sns.despine()
-		# matplotlib.pyplot.show()
-
-	def showSettings(self):
-		""" A simple function to print most of the attributes of the class.
-
-		"""
-		variables = [key for key in self.__dict__.keys() if (type(self.__dict__[key]) is str or type(self.__dict__[key]) is float or type(self.__dict__[key]) is int or type(self.__dict__[key]) is list and len(self.__dict__[key])<10)]
-		old = self.__dict__
-		Json={ key: old[key] for key in variables }
-		print(json.dumps(Json, sort_keys=True, indent=4))
-
 class Recommendations(object):
 	def __init__(self):
 		self.outfolder = "temp"
@@ -647,7 +593,6 @@ class Recommendations(object):
 			recommendations.update({user_id:rec})
 		return recommendations 
 
-
 class SimulationGUI(QDialog):
 	""" The simulation class takes users and items and simulates their interaction.
 
@@ -673,44 +618,35 @@ class SimulationGUI(QDialog):
 		self.createFigures()
 
 		# Top layout with labels
-		topLayout = QGridLayout()
 		topLabel = QLabel("Recommender settings")
-		topLayout.addWidget(topLabel,  1, 0)
 		topLabel2 = QLabel("Article settings")
-		topLayout.addWidget(topLabel2,  1, 1)
 		topLabel3 = QLabel("User settings")
-		topLayout.addWidget(topLabel3,  1, 2)
-		topLayout.setRowStretch(1, 1)
-		topLayout.setColumnStretch(0, 1)
-		topLayout.setColumnStretch(1, 1)
-		topLayout.setColumnStretch(2, 1)
-
+	
 		# Main layout
 		mainLayout = QGridLayout()
-		mainLayout.addLayout(topLayout, 0, 0, 1, 3)
-		mainLayout.addWidget(self.topLeftGroupBox, 1, 0 , 1 ,1)
-		mainLayout.addWidget(self.topMiddleGroupBox, 1, 1 ,1, 1)
-		mainLayout.addWidget(self.topRightGroupBox, 1, 2 ,1, 1 )
+		mainLayout.setColumnStretch(0, 4)
+		mainLayout.setColumnStretch(1, 4)
+		mainLayout.setColumnStretch(2, 4)
+		mainLayout.addWidget(topLabel, 0, 0)
+		mainLayout.addWidget(topLabel2, 0, 1)
+		mainLayout.addWidget(topLabel3, 0, 2)
+		mainLayout.addWidget(self.topLeftGroupBox, 1, 0 )
+		mainLayout.addWidget(self.topMiddleGroupBox, 1, 1 )
+		mainLayout.addWidget(self.topRightGroupBox, 1, 2 )
 		mainLayout.addWidget(self.controlsGroupBox, 2, 0, 1, 3)
 		mainLayout.addWidget(self.figures, 3, 0, 2, 3)
 		
-	
-		# mainLayout.setRowStretch(1, 1)
-		#mainLayout.setRowStretch(5, 2)
-		# mainLayout.setColumnStretch(0, 1)
-		# mainLayout.setColumnStretch(1, 1)
-		# mainLayout.setColumnStretch(2, 1)
 		self.setLayout(mainLayout)
-
-
+		self.left = 10
+		self.top = 10
+		self.width = 1000
+		self.height = 800
+		self.setGeometry(self.left, self.top, self.width, self.height)
 		self.setWindowTitle("SIREN")
 		
 		self.threadpool = QThreadPool()
 		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
-		# self.timer = QTimer()
-		# self.timer.setInterval(1000)
-		# self.timer.timeout.connect(self.recurring_timer)
-		# self.timer.start()
+	
 
 	# Controls
 	def createControlsGroupBox(self):
@@ -720,16 +656,17 @@ class SimulationGUI(QDialog):
 		self.startButton = QPushButton("Start")
 		self.startButton.setDefault(True)
 		self.startButton.clicked.connect(self.onStartButtonClicked)
+		self.startButton.setToolTip('Click to start the simulation')  
 
 		self.progressBar = QProgressBar()
 		self.progressBar.setRange(0, 100)
 		self.progressBar.setValue(0)
-		progressLabel = QLabel("&Progress:")
-		progressLabel.setBuddy(self.progressBar)
+		self.progressLabel = QLabel("&Progress:")
+		self.progressLabel.setBuddy(self.progressBar)
 
 		layout = QVBoxLayout()
 		layout.addWidget(self.startButton)
-		layout.addWidget(progressLabel)
+		layout.addWidget(self.progressLabel)
 		layout.addWidget(self.progressBar)
 	
 		layout.addStretch(1)
@@ -739,32 +676,17 @@ class SimulationGUI(QDialog):
 	def createFigures(self):
 		self.figures = QGroupBox("Figures")
 
-		dynamic_canvas1 = FigureCanvas(Figure(figsize=(5, 4),dpi = 100, tight_layout=True))
+		dynamic_canvas1 = FigureCanvas(Figure(figsize=(5, 4),dpi = 100, tight_layout=False))
 		self._dynamic_ax1 = dynamic_canvas1.figure.subplots()
 
-		dynamic_canvas2 = FigureCanvas(Figure(figsize=(5, 4), dpi = 100, tight_layout=True))
+		dynamic_canvas2 = FigureCanvas(Figure(figsize=(5, 4), dpi = 100, tight_layout=False))
 		self._dynamic_ax2 = dynamic_canvas2.figure.subplots()
 
-		
-
-		self._dynamic_ax1.clear()
-		self._dynamic_ax2.clear()
-		axis_font = {'fontname':'Arial', 'size':'8'}
-
-		for item in ([self._dynamic_ax1.title, self._dynamic_ax1.xaxis.label, self._dynamic_ax1.yaxis.label] + self._dynamic_ax1.get_xticklabels() + self._dynamic_ax1.get_yticklabels()):
-				item.set_fontsize(8)
-
-		self._dynamic_ax1.set_xlabel("Days", **axis_font)
-		self._dynamic_ax1.set_ylabel("EPC", **axis_font)
-		self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
-
 		layout = QGridLayout()
+		layout.setColumnStretch(0, 2)
+		layout.setColumnStretch(1, 2)
 		layout.addWidget(dynamic_canvas1, 0, 0)
 		layout.addWidget(dynamic_canvas2, 0, 1)
-		#layout.setRowStretch(0, 1)
-		#layout.setRowStretch(1, 1)
-		#layout.setColumnStretch(0, 1)
-		#layout.setColumnStretch(1, 1)
 		self.figures.setLayout(layout)
 
 	# Recommendation settings
@@ -775,22 +697,31 @@ class SimulationGUI(QDialog):
 		self.comboBoxAlgorithms.setSelectionMode(QAbstractItemView.MultiSelection)
 		comboBoxAlgorithmsLabel = QLabel("&Rec algorithms (scroll for more):")
 		comboBoxAlgorithmsLabel.setBuddy(self.comboBoxAlgorithms)
-		self.comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", "Random", "UserAttributeKNN","UserKNN","WRMF","MultiCoreBPRMF", "SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", "BPRSLIM","LeastSquareSLIM"])
+		self.comboBoxAlgorithms.addItems(["BPRMF", "ItemAttributeKNN", "ItemKNN", "MostPopular", 
+			"Random", "UserAttributeKNN","UserKNN","WRMF","MultiCoreBPRMF", 
+			"SoftMarginRankingMF", "WeightedBPRMF", "MostPopularByAttributes", 
+			"BPRSLIM","LeastSquareSLIM"])
+		comboBoxAlgorithmsLabel.setToolTip('The recommendation algorithms are part of the MyMediaLite toolbox') 
+		self.comboBoxAlgorithms.setToolTip('The recommendation algorithms are part of the MyMediaLite toolbox') 
+
 
 		self.spinBoxSalience = QSpinBox(self.topLeftGroupBox)
 		spinBoxSalienceLabel = QLabel("&Rec salience:")
 		spinBoxSalienceLabel.setBuddy(self.spinBoxSalience)
 		self.spinBoxSalience.setValue(5)
+		spinBoxSalienceLabel.setToolTip('Salience controls the extent to which users are susceptible to recommendations')
 
 		self.spinBoxDays = QSpinBox(self.topLeftGroupBox)
 		spinBoxDaysLabel = QLabel("&Days:")
 		spinBoxDaysLabel.setBuddy(self.spinBoxDays)
 		self.spinBoxDays.setValue(20)
+		spinBoxDaysLabel.setToolTip('The simulation iterations for which each recommendation algorithm will run')
 
 		self.spinBoxRecArticles = QSpinBox(self.topLeftGroupBox)
 		spinBoxRecArticlesLabel = QLabel("&Recommended articles per day:")
 		spinBoxRecArticlesLabel.setBuddy(self.spinBoxRecArticles)
 		self.spinBoxRecArticles.setValue(5)
+		spinBoxRecArticlesLabel.setToolTip('The amount of recommendations that each user receives per day')
 
 		layout = QVBoxLayout()
 		layout.addWidget(comboBoxAlgorithmsLabel)
@@ -807,8 +738,6 @@ class SimulationGUI(QDialog):
 
 	# Article settings
 	def createTopMiddleGroupBox(self):
-
-
 		self.topMiddleGroupBox = QTabWidget()
 		#self.topMiddleGroupBox.setSizePolicy(QSizePolicy.Preferred,QSizePolicy.Ignored)
 		#self.topMiddleGroupBox.heightForWidth()
@@ -871,7 +800,7 @@ class SimulationGUI(QDialog):
 		tab1 = QWidget()
 		tab1hbox = QVBoxLayout()
 		tab1hbox.setContentsMargins(5, 5, 5, 5)
-		tab1Text = QLabel("The likelihood of an article to belong to a topic:")
+		tab1Text = QLabel("The likelihood of an article to belong\n to a topic")
 		tab1hbox.addWidget(tab1Text)
 	
 		for widget  in [sliderEntLabel, self.sliderEnt, sliderBusLabel, 
@@ -884,7 +813,7 @@ class SimulationGUI(QDialog):
 		tab2 = QWidget()
 		tab2hbox = QVBoxLayout()
 		tab2hbox.setContentsMargins(5, 5, 5, 5)
-		tab2Text = QLabel("The likelihood of an article of a certain topic to appear in the news headlines:")
+		tab2Text = QLabel("The likelihood of an article of a certain\n topic to appear in the news headlines")
 		tab2hbox.addWidget(tab2Text)
 
 		for widget  in [sliderPromEntLabel, self.sliderPromEnt, sliderPromBusLabel, 
@@ -903,6 +832,7 @@ class SimulationGUI(QDialog):
 		self.spinBoxPubArticles.setValue(100)
 		spinBoxPubArticlesLabel = QLabel("&Published articles per day:")
 		spinBoxPubArticlesLabel.setBuddy(self.spinBoxPubArticles)
+		spinBoxPubArticlesLabel.setToolTip('The amount of new articles published per day')
 
 		tab3hbox.addWidget(spinBoxPubArticlesLabel)
 		tab3hbox.addWidget(self.spinBoxPubArticles)
@@ -913,7 +843,6 @@ class SimulationGUI(QDialog):
 		self.topMiddleGroupBox.addTab(tab1, "&Topic weights")
 		self.topMiddleGroupBox.addTab(tab2, "&Topic prominence")
 
-
 	# User settings
 	def createTopRightGroupBox(self):
 		self.topRightGroupBox = QGroupBox()
@@ -923,21 +852,23 @@ class SimulationGUI(QDialog):
 		self.spinBoxUsers.setValue(100)
 		spinBoxUsersLabel = QLabel("&Active users per day:")
 		spinBoxUsersLabel.setBuddy(self.spinBoxUsers)
+		spinBoxUsersLabel.setToolTip('The amount of users that actively read articles every day')
 
 		self.spinBoxUsersArticles = QSpinBox(self.topRightGroupBox)
 		self.spinBoxUsersArticles.setRange(1,50)
 		self.spinBoxUsersArticles.setValue(6)
 		spinBoxUsersArticlesLabel = QLabel("&Average read articles per day:")
 		spinBoxUsersArticlesLabel.setBuddy(self.spinBoxUsersArticles)
+		spinBoxUsersArticlesLabel.setToolTip('The average amount of articles that each user reads per day')
 
 		self.sliderFocus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
 		self.sliderFocus.setRange(5, 100)
 		self.sliderFocus.setValue(80)
 		sliderFocusLabel = QLabel("&Reading focus:")
 		sliderFocusLabel.setBuddy(self.sliderFocus)
+		sliderFocusLabel.setToolTip("Focus controls the extent to which users are susceptible \n to articles promoted by the editors vs. articles \n close to the user's preferences. \n 1 = focus on promoted articles")
 
 		layout = QVBoxLayout()
-		#layout.addWidget(defaultPushButton)
 		layout.addWidget(spinBoxUsersLabel)
 		layout.addWidget(self.spinBoxUsers)
 		layout.addWidget(spinBoxUsersArticlesLabel)
@@ -948,7 +879,14 @@ class SimulationGUI(QDialog):
 		layout.addStretch(1)
 		self.topRightGroupBox.setLayout(layout)
 
+	def printj(self, text, comments=""):
+		json = {"action":text,"comments":comments}
+		print(json)
 
+		self.feedback = text+comments
+		self.progressLabel.setText(self.feedback)
+		#self.progressLabel.repaint()
+	
 	"""
 		Multi-thread functions 
 
@@ -969,13 +907,18 @@ class SimulationGUI(QDialog):
 			self._dynamic_ax2.clear()
 			axis_font = {'fontname':'Arial', 'size':'8'}
 
+			for item in ([self._dynamic_ax1.title, self._dynamic_ax1.xaxis.label, self._dynamic_ax1.yaxis.label] + self._dynamic_ax1.get_xticklabels() + self._dynamic_ax1.get_yticklabels()):
+				item.set_fontsize(8)
+			for item in ([self._dynamic_ax2.title, self._dynamic_ax2.xaxis.label, self._dynamic_ax2.yaxis.label] + self._dynamic_ax2.get_xticklabels() + self._dynamic_ax2.get_yticklabels()):
+				item.set_fontsize(8)
+
 			self._dynamic_ax1.set_xlabel("Days", **axis_font)
 			self._dynamic_ax1.set_ylabel("EPC", **axis_font)
-			self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement (EPC) metric of Vargas (2015).", **axis_font)
+			self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement", **axis_font)
 
 			self._dynamic_ax2.set_xlabel("Days", **axis_font)
 			self._dynamic_ax2.set_ylabel("EPD", **axis_font)
-			self._dynamic_ax2.set_title("Unexpectedness diversity measured using the Expected Profile Distance (EPD) metric of Vargas (2015).", **axis_font)
+			self._dynamic_ax2.set_title("Unexpectedness diversity measured using the Expected Profile Distance", **axis_font)
 
 			# Shift the sinusoid as a function of time.
 			print(self.algorithms)
@@ -987,12 +930,14 @@ class SimulationGUI(QDialog):
 				self._dynamic_ax1.errorbar(x, y, yerr = yerror, label=algorithm)
 
 				y = df[algorithm]["EPD"]
-				x = [i for i in range(len(y))]
-				self._dynamic_ax2.plot(x, y, label=algorithm)
+				x = np.array([i for i in range(len(y))])+k*0.1
+				yerror = df[algorithm]["EPDstd"]
+				self._dynamic_ax2.errorbar(x, y, yerr = yerror, label=algorithm)
 
-
-			self._dynamic_ax1.legend()
-			self._dynamic_ax2.legend()
+			self._dynamic_ax1.set_xlim([0, self.spinBoxDays.value()])
+			self._dynamic_ax2.set_xlim([0, self.spinBoxDays.value()])
+			self._dynamic_ax1.legend( )
+			self._dynamic_ax2.legend( )
 			self._dynamic_ax1.figure.canvas.draw()
 			self._dynamic_ax1.figure.canvas.draw_idle()
 			self._dynamic_ax2.figure.canvas.draw()
@@ -1018,6 +963,8 @@ class SimulationGUI(QDialog):
 		self.startButton.setEnabled(True)
 		self.startButton.setText("Start")
 		self.startButton.repaint()
+
+		printj(text="Data stored in output folder "+self.settings[""])
 		return False
 
 	def onStartButtonClicked(self):
@@ -1034,7 +981,7 @@ class SimulationGUI(QDialog):
 		self.startButton.repaint()
 
 		# Initialize the simulation
-		settings = {"Number of active users per day": self.spinBoxUsers.value(),
+		self.settings = {"Number of active users per day": self.spinBoxUsers.value(),
 			"Days" : self.spinBoxDays.value(), 
 			"seed": int(1),
 			"Recommender salience": self.spinBoxSalience.value(),
@@ -1048,8 +995,8 @@ class SimulationGUI(QDialog):
 			"Overall topic prominence": [float(i.value()/10) for i in [self.sliderPromEnt,  self.sliderPromBus, self.sliderPromPol, self.sliderPromSpo, self.sliderPromTec]]}
 		
 		# Initialize with settings
-		print(settings)
-		self.initWithSettings(settings)
+		print(self.settings)
+		self.initWithSettings()
 
 		
 		# Pass the function to execute
@@ -1161,13 +1108,13 @@ class SimulationGUI(QDialog):
 				print(epoch_index/len(self.iterationRange))
 				progress_callback.emit((epoch_index+1)/len(self.iterationRange))
 
-				printj(self.algorithm+": Awareness...")				
+				self.printj(self.algorithm+": Awareness...")				
 				self.awarenessModule(epoch)
 				InitialAwareness = self.U.Awareness.copy()
 
 				# Recommendation module 
 				if self.algorithm is not "Control":
-					printj(self.algorithm+": Recommendations...")
+					self.printj(self.algorithm+": Recommendations...")
 
 					# Call the recommendation object
 					self.Rec.setData(self.U, self.I, self.algorithm, self.SalesHistory)
@@ -1180,7 +1127,7 @@ class SimulationGUI(QDialog):
 						
 						if self.algorithm is not "Control":
 							if user not in recommendations.keys():
-								printj(" -- Nothing to recommend -- to user ",user)
+								self.printj(" -- Nothing to recommend -- to user ",user)
 								continue
 							Rec = recommendations[user]
 							self.I.hasBeenRecommended[Rec] = 1
@@ -1190,13 +1137,13 @@ class SimulationGUI(QDialog):
 							self.U.Awareness[user, np.where(self.SalesHistory[user,Rec]>0)[0] ] = 0  	
 
 				# Choice 
-				printj(self.algorithm+": Choice...")
+				self.printj(self.algorithm+": Choice...")
 				for user in self.U.activeUserIndeces:
 					Rec=np.array([-1])
 					
 					if self.algorithm is not "Control":
 						if user not in recommendations.keys():
-							printj(" -- Nothing to recommend -- to user ",user)
+							self.printj(" -- Nothing to recommend -- to user ",user)
 							continue
 						Rec = recommendations[user]
 					
@@ -1232,12 +1179,12 @@ class SimulationGUI(QDialog):
 							InitialAwareness[user,indexOfChosenItem] ])
 
 				# Temporal adaptations
-				printj(self.algorithm+": Temporal adaptations...")	
+				self.printj(self.algorithm+": Temporal adaptations...")	
 				self.temporalAdaptationsModule(epoch)
 
 				# Compute diversity metrics		
 				if self.algorithm is not "Control":
-					printj(self.algorithm+": Diversity metrics...")
+					self.printj(self.algorithm+": Diversity metrics...")
 					
 					met = metrics.metrics(SalesHistoryBefore, recommendations, self.I.ItemsFeatures, self.I.ItemsDistances, self.SalesHistory)
 					#met.update({"Gini": metrics.computeGinis(self.SalesHistory,self.ControlHistory)})
@@ -1246,11 +1193,11 @@ class SimulationGUI(QDialog):
 						
 
 				# # Show stats on screen and save json for interface
-				# printj(self.algorithm+": Exporting...")
+				# self.printj(self.algorithm+": Exporting...")
 				# self.exportJsonForOnlineInterface(epoch, epoch_index, self.iterationRange, SalesHistoryBefore)
 
 				# Save results
-				printj(self.algorithm+": Exporting iteration data...")
+				self.printj(self.algorithm+": Exporting iteration data...")
 				self.exportAnalysisDataAfterIteration()
 				
 				# After the control period is over, we store its data to be used by the other rec algorithms
@@ -1345,7 +1292,7 @@ class SimulationGUI(QDialog):
 		Json={ key: old[key] for key in variables }
 		print(json.dumps(Json, sort_keys=True, indent=4))
 
-	def initWithSettings(self, settings):
+	def initWithSettings(self):
 		
 		# Simulation inits (not taken from the interface)
 		self.AnaylysisInteractionData = []  # Holder for results/data
@@ -1354,12 +1301,12 @@ class SimulationGUI(QDialog):
 		
 		
 		# Simulation inits taken from the interface
-		printj("Initialize simulation class...")
+		self.printj("Initialize simulation class...")
 		#sim.gallery = gallery 
-		self.outfolder = settings["outfolder"]
-		self.seed = int(settings["seed"])
-		self.n = int(settings["Number of recommended articles per day"])
-		self.algorithms = ['Control'] + settings["Recommender algorithms"]
+		self.outfolder = self.settings["outfolder"]
+		self.seed = int(self.settings["seed"])
+		self.n = int(self.settings["Number of recommended articles per day"])
+		self.algorithms = ['Control'] + self.settings["Recommender algorithms"]
 		self.diversityMetrics = {}  # Holder for diversity metrics (means + std)
 		for algorithm in self.algorithms:
 			self.diversityMetrics.update({algorithm:{}})
@@ -1371,38 +1318,38 @@ class SimulationGUI(QDialog):
 		# items that will be generated. We first need to run a Control period for
 		# iterarionsPerRecommender iterations, on different items than during the 
 		# recommendation period, as such the total amount of iterations is doubled.
-		self.totalNumberOfIterations = int(settings["Days"])*2 
+		self.totalNumberOfIterations = int(self.settings["Days"])*2 
 
-		printj("Initialize users/items classes...")
+		self.printj("Initialize users/items classes...")
 		U = Users()
 		I = Items()
 
-		U.delta = float(settings["Recommender salience"])
-		U.totalNumberOfUsers = int(settings["Number of active users per day"])
-		U.seed = int(settings["seed"])
-		U.Lambda = float(settings["Reading focus"])
-		U.meanSessionSize = int(settings["Average read articles per day"])
+		U.delta = float(self.settings["Recommender salience"])
+		U.totalNumberOfUsers = int(self.settings["Number of active users per day"])
+		U.seed = int(self.settings["seed"])
+		U.Lambda = float(self.settings["Reading focus"])
+		U.meanSessionSize = int(self.settings["Average read articles per day"])
 
-		I.seed = int(settings["seed"])
-		I.topicsFrequency = settings["Overall topic weights"]
-		I.topicsSalience = settings["Overall topic prominence"]
-		I.numberOfNewItemsPI = int(settings["Number of published articles per day"])
+		I.seed = int(self.settings["seed"])
+		I.topicsFrequency = self.settings["Overall topic weights"]
+		I.topicsSalience = self.settings["Overall topic prominence"]
+		I.numberOfNewItemsPI = int(self.settings["Number of published articles per day"])
 
 		I.generatePopulation(sim.totalNumberOfIterations)
 		U.generatePopulation()
 			
-		printj("Create simulation instance...")
+		self.printj("Create simulation instance...")
 		self.U = copy.deepcopy(U)
 		self.I = copy.deepcopy(I)
 		
 		self.D =  euclideanDistance(self.U.Users, self.I.Items)
 		self.SalesHistory = np.zeros([self.U.totalNumberOfUsers,self.I.totalNumberOfItems]) 
 
-		printj("Create recommendations instance...")
+		self.printj("Create recommendations instance...")
 		self.Rec = Recommendations()
 		self.Rec.U = copy.deepcopy(U)
 		self.Rec.I = copy.deepcopy(U)
-		self.Rec.n = int(settings["Number of recommended articles per day"])
+		self.Rec.n = int(self.settings["Number of recommended articles per day"])
 	
 
 if __name__ == '__main__':
