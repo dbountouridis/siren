@@ -1,7 +1,23 @@
 # Siren: A Simulation Framework for Understanding the Effects of Recommender Systems in Online News Environments
 
 
-A simulation framework  for the visualization and analysis of the effects of different recommenders systems. This simulation draws mainly on the work of Fleder and Hosanagar (2017). To account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. The simulation models two main components: users (preferences and behavior) and items (article content, publishing habits). Users interact with items and are recommended items based on their interaction.
+A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news enviroment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, to account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. 
+
+
+## Overview
+
+SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
+1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
+2. promoted articles by the editors (as they appear on the news website)
+3. personalized recommended articles
+
+At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
+
+Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
+1. the articles (that translate to specific publishing habits)
+2. the users (the readers’ preferences and reading behavior) 
+3. the recommendations (articles promoted to each user). 
+
 
 ## 1. Usage
 
@@ -32,7 +48,7 @@ The left-most form controls the recommendation settings. The most important vari
 
 #### 1.2 Article settings
 
-The middle form controls the articles settings i.e., the content-provider's intent: what the content-provider wants users to read. The variables include the number of new articles published per day, the distribution of topics among articles and the prominence of each topic (how likely it is for a topic to appear on the top news page). The default settings correspond to a content-provider with focus on politics. 
+The middle form controls the articles settings i.e., the content-provider's intent: what the content-provider wants users to read. The variables include the number of new articles published per day, the distribution of topics among articles and the prominence of each topic (how likely it is for a topic to appear in the headlines). The default settings correspond to a content-provider with focus on politics. 
 
 |          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
@@ -60,19 +76,6 @@ A number of variables are only accessed through the code itself. The whole list 
 
 
 
-## Overview
-
-Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
-1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
-2. promoted articles by the editors (as they appear on the news website)
-3. personalized recommended articles
-
-At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
-
-Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
-1. the articles (that translate to specific publishing habits)
-2. the users (the readers’ preferences and reading behavior) 
-3. the recommendations (articles promoted to each user). 
 
 
 
