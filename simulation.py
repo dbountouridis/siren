@@ -8,8 +8,8 @@ and items (article content, publishing habits). Users interact with items and ar
 based on their interaction.
 
 Example:
+	
 	$ python3 simulation.py 
-
 
 """
 
@@ -20,11 +20,8 @@ from scipy import stats
 from scipy.stats import norm
 from scipy.stats import chi2
 import random
-import time
-import seaborn as sns
 import pandas as pd
 import pickle
-import networkx as nx
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.mixture import GaussianMixture
 import os
@@ -34,7 +31,7 @@ import json
 import metrics
 import matplotlib
 import bisect
-import collections
+
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *

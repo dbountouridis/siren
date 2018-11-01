@@ -3,6 +3,16 @@
 
 A simulation framework  for the visualization and analysis of the effects of different recommenders systems. This simulation draws mainly on the work of Fleder and Hosanagar (2017). To account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. The simulation models two main components: users (preferences and behavior) and items (article content, publishing habits). Users interact with items and are recommended items based on their interaction.
 
+## Usage
+
+After all the dependencies have been installed, run SIREN:
+
+```python
+python3 simulation.py
+```
+
+![Alt text](images/interface.png?raw=true "Interface")
+
 ## Overview
 
 Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
