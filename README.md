@@ -5,12 +5,20 @@ A simulation framework  for the visualization and analysis of the effects of dif
 
 
 |          | Adjustable | Description |
-| ---      | ---        | ---         |
+| ---      |  :---:        | ---         |
 |          |      +     |  Total number of active, daily users/readers.           |
 |          |            |  Awareness decay with distance       |
 |          |            |  Awareness decay with article prominence      |
 |          |      +      |  Awareness weight placed on prominent versus neighborhood articles      |
-|          |            |  Awareness decay with article prominence      |
+|     Users     |            |  Maximum size of awareness pool      |
+|          |            |  Choice model: the user’s sensitivity to distance on the map      |
+|          |            |  User-drift: user’s sensitivity to distance on the map      |
+|          |            |  User-drift: distance covered between the article and user       |
+|          |            |  Amount of articles read per iteration per user (session size)       |
+|     ---     |     :---:        |  ---       |
+|          |            |  User-drift: distance covered between the article and user       |
+
+Amount of articles read per iteration per user (session size)
 
 ## Citation
 
