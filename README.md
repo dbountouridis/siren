@@ -16,9 +16,11 @@ An interface similar to the one below will be presented:
 
 The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. The default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper).
 
+
+
 #### 1.1 Recommendation settings
 
-The left-most form controls the recommendation settings. The most important variable is the recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. Other variables include the number and the prominence of the recommended articles presented to the simulated users. "Days" corresponds to the number of simulation iterations that will run per recommendation algorithm.
+The left-most form controls the recommendation settings. The most important variable is the set of recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. Other variables include the number and the prominence of the recommended articles presented to the simulated users. "Days" corresponds to the number of simulation iterations that will run per recommendation algorithm.
 
 |          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
@@ -26,6 +28,8 @@ The left-most form controls the recommendation settings. The most important vari
 |  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
 |          |            |  Ranking-based decay of recommender salience     |
 |          |       +     |  Number of simulation iterations per recommender      |
+
+
 
 
 #### 1.1 User settings
