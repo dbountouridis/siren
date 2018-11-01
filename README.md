@@ -18,8 +18,15 @@ A simulation framework  for the visualization and analysis of the effects of dif
 
 |          | Adjustable | Description |
 | ---      |  :---:        | ---         |
-|          |      +     |  Total number of articles (number of iterations x articles per day).           |
-|  Articles|       +     |  Percentage of articles added per day/iteration per topic.       |
+|          |      +     |  Number of recommended articles per user per iteration.           |
+|  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
+|          |            |  Ranking-based decay of recommender salience     |
+|          |       +     |  Number of simulation iterations per recommender      |
+
+|          | Adjustable | Description |
+| ---      |  :---:        | ---         |
+|          |      +     |  Total number of articles (number of iterations x articles per day)           |
+|  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
 |          |       +     |  Awareness: initial article prominence per topic     |
 |          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
