@@ -383,9 +383,9 @@ class Items(object):
 		self.percentageOfActiveItems = False  
 							
 		# Topics, frequency weights and prominence weights. We use topics instead of "classes" here.
-		self.topics = ["entertainment","business","sport","politics","tech"]
-		self.topicsProminence = [0.05,0.07,0.03,0.85,0.01] 
-		self.topicsFrequency = [0.2, 0.2, 0.2, 0.2, 0.2]
+		self.topics = ["entertainment","business","politics","sport","tech"]
+		self.topicsProminence = [] #[0.05,0.07,0.03,0.85,0.01] 
+		self.topicsFrequency = [] #[0.2, 0.2, 0.2, 0.2, 0.2]
 
 		self.p = 0.1  # Slope of salience decrease function
 
@@ -523,7 +523,7 @@ class Items(object):
 
 class Recommendations(object):
 	def __init__(self):
-		self.outfolder = "temp"
+		self.outfolder = ""
 		self.SalesHistory = []
 		self.U = []
 		self.I = []
@@ -639,13 +639,13 @@ class SimulationGUI(QDialog):
 		self.setLayout(mainLayout)
 		self.left = 10
 		self.top = 10
-		self.width = 1000
+		self.width = 1200
 		self.height = 800
 		self.setGeometry(self.left, self.top, self.width, self.height)
 		self.setWindowTitle("SIREN")
 		
 		self.threadpool = QThreadPool()
-		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
+		#print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 	
 
 	# Controls
@@ -682,11 +682,15 @@ class SimulationGUI(QDialog):
 		dynamic_canvas2 = FigureCanvas(Figure(figsize=(5, 4), dpi = 100, tight_layout=False))
 		self._dynamic_ax2 = dynamic_canvas2.figure.subplots()
 
+		dynamic_canvas3 = FigureCanvas(Figure(figsize=(5, 4), dpi = 100, tight_layout=False))
+		self._dynamic_ax3 = dynamic_canvas3.figure.subplots()
+
 		layout = QGridLayout()
-		layout.setColumnStretch(0, 2)
-		layout.setColumnStretch(1, 2)
+		# layout.setColumnStretch(0, 3)
+		# layout.setColumnStretch(1, 3)
 		layout.addWidget(dynamic_canvas1, 0, 0)
 		layout.addWidget(dynamic_canvas2, 0, 1)
+		layout.addWidget(dynamic_canvas3, 0, 2)
 		self.figures.setLayout(layout)
 
 	# Recommendation settings
@@ -759,7 +763,7 @@ class SimulationGUI(QDialog):
 		sliderSpoLabel.setBuddy(self.sliderSpo)
 
 		self.sliderTec = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
-		sliderTecLabel = QLabel("&Sports:")
+		sliderTecLabel = QLabel("&Tech:")
 		sliderTecLabel.setBuddy(self.sliderTec)
 
 		self.sliderPromEnt = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
@@ -779,7 +783,7 @@ class SimulationGUI(QDialog):
 		sliderPromSpoLabel.setBuddy(self.sliderPromSpo)
 
 		self.sliderPromTec = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
-		sliderPromTecLabel = QLabel("&Sports:")
+		sliderPromTecLabel = QLabel("&Tech:")
 		sliderPromTecLabel.setBuddy(self.sliderPromTec)
 
 		# Set values
@@ -789,7 +793,7 @@ class SimulationGUI(QDialog):
 			widget.setTickInterval(1)
 			widget.setSingleStep(1) # arrow-key step-size
 			widget.setPageStep(1) # mouse-wheel/page-key step-size
-			if i!=2: widget.setValue(2)
+			if i!=2: widget.setValue(1)
 			else:  widget.setValue(9) # politics
 
 		for i,widget in enumerate([self.sliderEnt,self.sliderBus, self.sliderPol, self.sliderSpo, self.sliderTec]):
@@ -800,7 +804,7 @@ class SimulationGUI(QDialog):
 		tab1 = QWidget()
 		tab1hbox = QVBoxLayout()
 		tab1hbox.setContentsMargins(5, 5, 5, 5)
-		tab1Text = QLabel("The likelihood of an article to belong\n to a topic")
+		tab1Text = QLabel("The likelihood of an article to belong\n to a topic (from 0.1 to 1)")
 		tab1hbox.addWidget(tab1Text)
 	
 		for widget  in [sliderEntLabel, self.sliderEnt, sliderBusLabel, 
@@ -813,7 +817,7 @@ class SimulationGUI(QDialog):
 		tab2 = QWidget()
 		tab2hbox = QVBoxLayout()
 		tab2hbox.setContentsMargins(5, 5, 5, 5)
-		tab2Text = QLabel("The likelihood of an article of a certain\n topic to appear in the news headlines")
+		tab2Text = QLabel("The likelihood of an article of a certain\n topic to appear in the news headlines (from 0.1 to 1)")
 		tab2hbox.addWidget(tab2Text)
 
 		for widget  in [sliderPromEntLabel, self.sliderPromEnt, sliderPromBusLabel, 
@@ -863,7 +867,7 @@ class SimulationGUI(QDialog):
 
 		self.sliderFocus = QSlider(Qt.Horizontal, self.topMiddleGroupBox)
 		self.sliderFocus.setRange(5, 100)
-		self.sliderFocus.setValue(80)
+		self.sliderFocus.setValue(60)
 		sliderFocusLabel = QLabel("&Reading focus:")
 		sliderFocusLabel.setBuddy(self.sliderFocus)
 		sliderFocusLabel.setToolTip("Focus controls the extent to which users are susceptible \n to articles promoted by the editors vs. articles \n close to the user's preferences. \n 1 = focus on promoted articles")
@@ -885,13 +889,14 @@ class SimulationGUI(QDialog):
 
 		self.feedback = text+comments
 		self.progressLabel.setText(self.feedback)
-		#self.progressLabel.repaint()
+		
 	
 	"""
 		Multi-thread functions 
 
 	"""
 
+	# Update function
 	def progress_fn(self, progress_):
 		
 		curVal = self.progressBar.value()
@@ -899,28 +904,33 @@ class SimulationGUI(QDialog):
 		self.progressBar.setValue(progress_*100)
 
 		if self.algorithm!="Control":
+			# Load distribution metrics
+			df_dis = pd.read_pickle(self.outfolder + "/metrics distribution.pkl")
+			
 
 			# Load diversity metrics data
 			df = pd.read_pickle(self.outfolder + "/metrics analysis.pkl")
 
-			self._dynamic_ax1.clear()
-			self._dynamic_ax2.clear()
-			axis_font = {'fontname':'Arial', 'size':'8'}
-
-			for item in ([self._dynamic_ax1.title, self._dynamic_ax1.xaxis.label, self._dynamic_ax1.yaxis.label] + self._dynamic_ax1.get_xticklabels() + self._dynamic_ax1.get_yticklabels()):
-				item.set_fontsize(8)
-			for item in ([self._dynamic_ax2.title, self._dynamic_ax2.xaxis.label, self._dynamic_ax2.yaxis.label] + self._dynamic_ax2.get_xticklabels() + self._dynamic_ax2.get_yticklabels()):
-				item.set_fontsize(8)
-
+			# Font sizes
+			for axis in [self._dynamic_ax1, self._dynamic_ax2, self._dynamic_ax3]:
+				axis.clear()
+				axis.clear()
+				axis_font = {'fontname':'Arial', 'size':'8'}
+				for item in ([axis.title, axis.xaxis.label, axis.yaxis.label] + axis.get_xticklabels() + axis.get_yticklabels()):
+					item.set_fontsize(8)
+				axis.tick_params(direction='out', length=6, width=2, grid_color='r', grid_alpha=0.5, labelsize=6)
+				
 			self._dynamic_ax1.set_xlabel("Days", **axis_font)
 			self._dynamic_ax1.set_ylabel("EPC", **axis_font)
-			self._dynamic_ax1.set_title("Long-tail diversity measured using the Expected Popularity Complement", **axis_font)
+			self._dynamic_ax1.set_title("Long-tail diversity (Expected Popularity Complement)", **axis_font)
 
 			self._dynamic_ax2.set_xlabel("Days", **axis_font)
 			self._dynamic_ax2.set_ylabel("EPD", **axis_font)
-			self._dynamic_ax2.set_title("Unexpectedness diversity measured using the Expected Profile Distance", **axis_font)
+			self._dynamic_ax2.set_title("Unexpectedness diversity (Expected Profile Distance)", **axis_font)
 
-			# Shift the sinusoid as a function of time.
+			self._dynamic_ax3.set_title("The overall distribution of read articles by topic", **axis_font)
+
+			# Parse data
 			print(self.algorithms)
 			for k, algorithm in enumerate(self.algorithms):
 				if algorithm=="Control":continue
@@ -934,16 +944,26 @@ class SimulationGUI(QDialog):
 				yerror = df[algorithm]["EPDstd"]
 				self._dynamic_ax2.errorbar(x, y, yerr = yerror, label=algorithm)
 
+			
+			ind = np.arange(len(self.algorithms)-1)
+			df_dis = df_dis.drop(columns = ["Control"])
+			columns = list(df_dis.columns.values)
+			for i,topic in enumerate(df_dis.index.values):
+				data = np.array(df_dis.loc[topic])
+				self._dynamic_ax3.bar(ind + i*0.1, data, 0.1, label=topic)
+
+			# Set x-limits for diversity measures
 			self._dynamic_ax1.set_xlim([0, self.spinBoxDays.value()])
 			self._dynamic_ax2.set_xlim([0, self.spinBoxDays.value()])
-			self._dynamic_ax1.legend( )
-			self._dynamic_ax2.legend( )
-			self._dynamic_ax1.figure.canvas.draw()
-			self._dynamic_ax1.figure.canvas.draw_idle()
-			self._dynamic_ax2.figure.canvas.draw()
-			self._dynamic_ax2.figure.canvas.draw_idle()
-
-
+			self._dynamic_ax3.set_xticks(ind)
+			self._dynamic_ax3.set_xticklabels(columns)
+			
+			# Add legends and draw
+			for axis in [self._dynamic_ax1, self._dynamic_ax2, self._dynamic_ax3]:
+				axis.legend(prop={'size': 6})
+				axis.figure.canvas.draw()
+				axis.figure.canvas.draw_idle()
+			
 	def print_output(self):
 		"""
 			Empty
@@ -964,7 +984,8 @@ class SimulationGUI(QDialog):
 		self.startButton.setText("Start")
 		self.startButton.repaint()
 
-		printj(text="Data stored in output folder "+self.settings[""])
+		self.printj(text="Raw data stored in folder: "+self.settings["outfolder"])
+		self.progressLabel.repaint()
 		return False
 
 	def onStartButtonClicked(self):
@@ -986,7 +1007,7 @@ class SimulationGUI(QDialog):
 			"seed": int(1),
 			"Recommender salience": self.spinBoxSalience.value(),
 			"Number of published articles per day": self.spinBoxPubArticles.value(),
-			"outfolder": "temp",
+			"outfolder": "output-"+str(time.time()),
 			"Number of recommended articles per day": self.spinBoxRecArticles.value(),
 			"Average read articles per day": self.spinBoxUsersArticles.value(),
 			"Reading focus": float(self.sliderFocus.value()/100),
@@ -994,11 +1015,13 @@ class SimulationGUI(QDialog):
 			"Overall topic weights": [float(i.value()/100) for i in [self.sliderEnt,  self.sliderBus, self.sliderPol, self.sliderSpo, self.sliderTec]],
 			"Overall topic prominence": [float(i.value()/10) for i in [self.sliderPromEnt,  self.sliderPromBus, self.sliderPromPol, self.sliderPromSpo, self.sliderPromTec]]}
 		
+		# Make outfolder
+		os.makedirs(self.settings["outfolder"])
+
 		# Initialize with settings
 		print(self.settings)
 		self.initWithSettings()
 
-		
 		# Pass the function to execute
 		worker = Worker(self.runSimulation) # Any other args, kwargs are passed to the run function
 		worker.signals.result.connect(self.print_output)
@@ -1014,16 +1037,24 @@ class SimulationGUI(QDialog):
 	
 	"""
 	def exportAnalysisDataAfterIteration(self):
-		""" Export some analysis data to dataframes.
+		""" Export data to dataframes
+
+		This is called at the end of each rec algorithm iteration. Certain data
+		can be exported for further analysis e.g. the the SalesHistory. For this
+		version, we simply export the appropriate data for the figures provided
+		by the interface.
 
 		"""
 
 
 		# Metrics output
-		df = pd.DataFrame(self.diversityMetrics)
+		df = pd.DataFrame(self.data["Diversity"])
 		df.to_pickle(self.outfolder + "/metrics analysis.pkl")
 
-	
+		# Topics distribution output
+		df = pd.DataFrame(self.data["Distribution"])
+		df.to_pickle(self.outfolder + "/metrics distribution.pkl")
+
 	def awarenessModule(self, epoch):
 		""" This function computes the awareness of each user.
 
@@ -1105,8 +1136,6 @@ class SimulationGUI(QDialog):
 			for epoch_index, epoch in enumerate(self.iterationRange):
 
 				SalesHistoryBefore = self.SalesHistory.copy()
-				print(epoch_index/len(self.iterationRange))
-				progress_callback.emit((epoch_index+1)/len(self.iterationRange))
 
 				self.printj(self.algorithm+": Awareness...")				
 				self.awarenessModule(epoch)
@@ -1160,45 +1189,31 @@ class SimulationGUI(QDialog):
 					if self.algorithm is not "Control" and len(indecesOfChosenItems)>0:
 						self.U.computeNewPositionOfUser(user, self.I.Items[indecesOfChosenItems])
 
-					# Store some data for analysis
-					for i,indexOfChosenItem in enumerate(indecesOfChosenItems):
-						indexOfChosenItemW = indecesOfChosenItemsW[i]
-						self.AnaylysisInteractionData.append([epoch_index, 
-							user, 
-							self.algorithm,
-							indexOfChosenItem,
-							self.I.ItemLifespan[indexOfChosenItem], 
-							self.I.ItemProminence[indexOfChosenItem],
-							self.I.topics[self.I.ItemsClass[indexOfChosenItem]],
-							indexOfChosenItem in Rec, 
-							indexOfChosenItem == indexOfChosenItemW,
-							self.I.hasBeenRecommended[indexOfChosenItemW],
-							self.I.ItemsClass[indexOfChosenItem]==self.I.ItemsClass[indexOfChosenItemW] , 
-							0,
-							0, 
-							InitialAwareness[user,indexOfChosenItem] ])
-
 				# Temporal adaptations
 				self.printj(self.algorithm+": Temporal adaptations...")	
 				self.temporalAdaptationsModule(epoch)
 
-				# Compute diversity metrics		
+				# Compute diversity and other metrics. For this version, we compute
+				# only two diversity metrics (EPC, EPD) and the topic distribution		
 				if self.algorithm is not "Control":
-					self.printj(self.algorithm+": Diversity metrics...")
 					
+					self.printj(self.algorithm+": Diversity metrics...")
 					met = metrics.metrics(SalesHistoryBefore, recommendations, self.I.ItemsFeatures, self.I.ItemsDistances, self.SalesHistory)
-					#met.update({"Gini": metrics.computeGinis(self.SalesHistory,self.ControlHistory)})
 					for key in met.keys():
-						self.diversityMetrics[self.algorithm][key].append(met[key])
-						
+						self.data["Diversity"][self.algorithm][key].append(met[key])
 
-				# # Show stats on screen and save json for interface
-				# self.printj(self.algorithm+": Exporting...")
-				# self.exportJsonForOnlineInterface(epoch, epoch_index, self.iterationRange, SalesHistoryBefore)
+					self.printj(self.algorithm+": Distribution...")
+					for i in range(len(self.I.topics)):
+						indeces = np.where(self.I.ItemsClass==i)[0]
+						A = self.SalesHistory[:,indeces] - ControlHistory[:,indeces]
+						self.data["Distribution"][self.algorithm][self.I.topics[i]] = np.sum(np.sum(A,axis=1))
+
+					# Add more metric computations here...
 
 				# Save results
 				self.printj(self.algorithm+": Exporting iteration data...")
 				self.exportAnalysisDataAfterIteration()
+				progress_callback.emit((epoch_index+1)/len(self.iterationRange))
 				
 				# After the control period is over, we store its data to be used by the other rec algorithms
 				if self.algorithm == "Control":
@@ -1207,91 +1222,6 @@ class SimulationGUI(QDialog):
 					ControlD = self.D.copy()  # Start from the control distances between items and users
 					ControlHistory = self.SalesHistory.copy()  # We use a copy of th		
 				
-	def plot2D(self, drift = False, output = "initial-users-products.pdf", storeOnly = True):
-		""" Plotting the users-items on the attribute space.
-
-		Args:
-			drift (bool): Whether the user drift should be plotted (it is time consuming)
-			output (str): The output pdf file
-			storeOnly (bool): Whether the plot should be shown
-
-		"""
-
-		sns.set_context("notebook", font_scale=1.6, rc={"lines.linewidth": 1.0,'xtick.labelsize': 32, 'axes.labelsize': 32})
-		sns.set(style="whitegrid")
-		sns.set_style({'font.family': 'serif', 'font.serif': ['Times New Roman']})
-		flatui = sns.color_palette("husl", 8)
-		f, ax = matplotlib.pyplot.subplots(1,1, figsize=(6,6), sharey=True)
-
-		cmaps= ['Blues','Reds','Greens','Oranges','Greys']
-		colors = [sns.color_palette(cmaps[i])[-2] for i in range(len(self.I.topics))]
-		
-		# If no sales history yet, display items with prominence as 3rd dimension
-		if np.sum(np.sum(self.SalesHistory))==0:
-			n = np.sum(self.SalesHistory,axis=0)
-			for i in range(self.I.totalNumberOfItems): 
-				color = colors[self.I.ItemsClass[i]]
-				s = self.I.ItemProminence[i]*40
-				ax.scatter(self.I.Items[i,0], self.I.Items[i,1], marker='o', c=color,s=s,alpha=0.5)
-		else:
-			# KDE plot
-			n = np.sum(self.SalesHistory,axis=0)
-			for cat in range(len(self.I.topics)): # 5 topic spaces
-				indeces=np.where(self.I.ItemsClass==cat)[0]
-				x = []
-				for i in indeces:
-					if n[i]>0:
-						for k in range(int(n[i])): x.append([self.I.Items[i,0],self.I.Items[i,1]])
-				ax = sns.kdeplot(np.array(x)[:,0], np.array(x)[:,1], shade=True, shade_lowest=False, alpha = 0.4, cmap=cmaps[cat],kernel='gau')
-			
-			# Scatter
-			for i in range(self.I.totalNumberOfItems): 
-				color = colors[self.I.ItemsClass[i]]
-				if n[i]>=1:
-					v = 0.4+ n[i]/np.max(n)*0.4
-					c = (1,0,0.0,v)
-					s = 2+n[i]/np.max(n)*40
-					marker = 'o'
-				else:
-					color = (0,0,0,0.1)
-					v = 0.1
-					s = 10
-					marker = 'x'
-				ax.scatter(self.I.Items[i,0], self.I.Items[i,1], marker=marker, c=color,s=s,alpha=v)	
-		
-		# Final user position as a circle
-		for i in range(len(self.U.Users[:,1])):
-			ax.scatter(self.U.Users[i,0], self.U.Users[i,1], marker='+', c='k',s=20, alpha = 0.8 )
-		
-		# User drift
-		if drift:
-			for i in range(len(self.U.Users[:,1])):
-				for j in range(len(self.U.X[i])-1):
-					if self.U.X[i][j+1]!=0 and self.U.Y[i][j+1]!=0:
-						ax.plot([self.U.X[i][j], self.U.X[i][j+1]], [self.U.Y[i][j], self.U.Y[i][j+1]], 'k-', lw=1, alpha =0.4)
-
-		ax.set_xlabel(self.algorithm)
-		ax.set_aspect('equal', adjustable='box')
-		ax.set_xlim([-1.1,1.1])
-		ax.set_ylim([-1.1,1.1])
-		for tick in ax.xaxis.get_major_ticks():
-			tick.label.set_fontsize(14)
-		for tick in ax.yaxis.get_major_ticks():
-			tick.label.set_fontsize(14) 
-		matplotlib.pyplot.tight_layout()
-		matplotlib.pyplot.savefig(self.outfolder + "/" + output)
-		if not storeOnly: matplotlib.pyplot.show()
- 
-	def showSettings(self):
-		""" A simple function to print most of the attributes of the class.
-
-		"""
-
-		variables = [key for key in self.__dict__.keys() if (type(self.__dict__[key]) is str or type(self.__dict__[key]) is float or type(self.__dict__[key]) is int or type(self.__dict__[key]) is list and len(self.__dict__[key])<10)]
-		old = self.__dict__
-		Json={ key: old[key] for key in variables }
-		print(json.dumps(Json, sort_keys=True, indent=4))
-
 	def initWithSettings(self):
 		
 		# Simulation inits (not taken from the interface)
@@ -1307,12 +1237,6 @@ class SimulationGUI(QDialog):
 		self.seed = int(self.settings["seed"])
 		self.n = int(self.settings["Number of recommended articles per day"])
 		self.algorithms = ['Control'] + self.settings["Recommender algorithms"]
-		self.diversityMetrics = {}  # Holder for diversity metrics (means + std)
-		for algorithm in self.algorithms:
-			self.diversityMetrics.update({algorithm:{}})
-			for key in ["EPC", "EPCstd",'ILD',"Gini", "EFD", "EPD", "EILD", 'ILDstd', "EFDstd", "EPDstd", "EILDstd"]:
-				self.diversityMetrics[algorithm].update({key:[]})
-		
 			
 		# The totalNumberOfIterations controls the amount of
 		# items that will be generated. We first need to run a Control period for
@@ -1332,7 +1256,7 @@ class SimulationGUI(QDialog):
 
 		I.seed = int(self.settings["seed"])
 		I.topicsFrequency = self.settings["Overall topic weights"]
-		I.topicsSalience = self.settings["Overall topic prominence"]
+		I.topicsProminence = self.settings["Overall topic prominence"]
 		I.numberOfNewItemsPI = int(self.settings["Number of published articles per day"])
 
 		I.generatePopulation(sim.totalNumberOfIterations)
@@ -1344,12 +1268,29 @@ class SimulationGUI(QDialog):
 		
 		self.D =  euclideanDistance(self.U.Users, self.I.Items)
 		self.SalesHistory = np.zeros([self.U.totalNumberOfUsers,self.I.totalNumberOfItems]) 
-
+		
 		self.printj("Create recommendations instance...")
 		self.Rec = Recommendations()
 		self.Rec.U = copy.deepcopy(U)
 		self.Rec.I = copy.deepcopy(U)
+		self.Rec.outfolder = self.settings["outfolder"]
 		self.Rec.n = int(self.settings["Number of recommended articles per day"])
+
+		# Create structure to hold data ouput
+		self.data = {}
+		distribution = {}
+		for algorithm in self.algorithms:
+			distribution.update({algorithm:{}})
+			for key in self.I.topics:
+				distribution[algorithm].update({key: 0})
+		self.data.update({"Distribution": distribution})
+		
+		diversityMetrics = {}  # Holder for diversity metrics (means + std)
+		for algorithm in self.algorithms:
+			diversityMetrics.update({algorithm:{}})
+			for key in ["EPC", "EPCstd",'ILD',"Gini", "EFD", "EPD", "EILD", 'ILDstd', "EFDstd", "EPDstd", "EILDstd"]:
+				diversityMetrics[algorithm].update({key:[]})
+		self.data.update({"Diversity": diversityMetrics})
 	
 
 if __name__ == '__main__':
