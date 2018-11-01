@@ -9,6 +9,7 @@ Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. ar
 1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
 2. promoted articles by the editors (as they appear on the news website)
 3. personalized recommended articles
+
 At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
 
 Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
