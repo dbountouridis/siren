@@ -3,8 +3,21 @@
 
 A simulation framework  for the visualization and analysis of the effects of different recommenders systems. This simulation draws mainly on the work of Fleder and Hosanagar (2017). To account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. The simulation models two main components: users (preferences and behavior) and items (article content, publishing habits). Users interact with items and are recommended items based on their interaction.
 
+## Overview
 
-|          | Adjustable | Description |
+Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
+1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
+2. promoted articles by the editors (as they appear on the news website)
+3. personalized recommended articles
+At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
+
+Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
+1. the articles (that translate to specific publishing habits)
+2. the users (the readers’ preferences and reading behavior) 
+3. the recommendations (articles promoted to each user). 
+
+
+|          | GUI Adjustable| Description |
 | ---      |  :---:        | ---         |
 |          |      +     |  Total number of active, daily users/readers.           |
 |          |            |  Awareness decay with distance       |
@@ -16,14 +29,14 @@ A simulation framework  for the visualization and analysis of the effects of dif
 |          |            |  User-drift: distance covered between the article and user       |
 |          |            |  Amount of articles read per iteration per user (session size)       |
 
-|          | Adjustable | Description |
+|          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
 |          |      +     |  Number of recommended articles per user per iteration.           |
 |  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
 |          |            |  Ranking-based decay of recommender salience     |
 |          |       +     |  Number of simulation iterations per recommender      |
 
-|          | Adjustable | Description |
+|          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
 |          |      +     |  Total number of articles (number of iterations x articles per day)           |
 |  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
@@ -32,7 +45,6 @@ A simulation framework  for the visualization and analysis of the effects of dif
 
 
 
-Amount of articles read per iteration per user (session size)
 
 ## Citation
 
