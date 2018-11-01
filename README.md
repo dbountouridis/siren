@@ -3,6 +3,8 @@
 
 A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news enviroment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, to account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. 
 
+SIREN's interface currently offers recommendations based the [MyMediaLite](www.mymedialite.net/) toolbox and visualizations for two diversity metrics (long-tail and unexpectedness). SIREN can be used by content providers (news outlets) to investigate which recommendation strategy fits better their diversity needs. At the same time, SIREN's code can be adapted/expanced by researchers to analyse various recommender effects in a news environment.
+
 
 ## Overview
 
@@ -13,10 +15,6 @@ SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articl
 
 At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
 
-Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
-1. the articles (that translate to specific publishing habits)
-2. the users (the readers’ preferences and reading behavior) 
-3. the recommendations (articles promoted to each user). 
 
 
 ## 1. Usage
