@@ -15,8 +15,15 @@ A simulation framework  for the visualization and analysis of the effects of dif
 |          |            |  User-drift: user’s sensitivity to distance on the map      |
 |          |            |  User-drift: distance covered between the article and user       |
 |          |            |  Amount of articles read per iteration per user (session size)       |
-|     ---     |     :---:        |  ---       |
-|          |            |  User-drift: distance covered between the article and user       |
+
+|          | Adjustable | Description |
+| ---      |  :---:        | ---         |
+|          |      +     |  Total number of articles (number of iterations x articles per day).           |
+|  Articles|       +     |  Percentage of articles added per day/iteration per topic.       |
+|          |       +     |  Awareness: initial article prominence per topic     |
+|          |            |  Awareness weight placed on prominent versus neighborhood articles      |
+
+
 
 Amount of articles read per iteration per user (session size)
 
