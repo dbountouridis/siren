@@ -13,19 +13,7 @@ python3 simulation.py
 An interface similar to the one below will be presented:
 ![Alt text](images/interface.png?raw=true "Interface")
 
-## Overview
-
-Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
-1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
-2. promoted articles by the editors (as they appear on the news website)
-3. personalized recommended articles
-
-At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
-
-Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
-1. the articles (that translate to specific publishing habits)
-2. the users (the readers’ preferences and reading behavior) 
-3. the recommendations (articles promoted to each user). 
+The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. A number of variables are only accessed through the code itself. The whole list of variables (and whether they can be adjusted via the GUI) are presented in the tables below:
 
 
 |          | GUI Adjustable| Description |
@@ -53,6 +41,22 @@ Under this model, we identify three main interacting components that SIREN’s i
 |  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
 |          |       +     |  Awareness: initial article prominence per topic     |
 |          |            |  Awareness weight placed on prominent versus neighborhood articles      |
+
+## Overview
+
+Our model assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute space. Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
+1. articles in their proximity, corresponding to preferred/sought out topics (via search or navigation bars)
+2. promoted articles by the editors (as they appear on the news website)
+3. personalized recommended articles
+
+At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
+
+Under this model, we identify three main interacting components that SIREN’s interface gives control over: 
+1. the articles (that translate to specific publishing habits)
+2. the users (the readers’ preferences and reading behavior) 
+3. the recommendations (articles promoted to each user). 
+
+
 
 
 
