@@ -3,7 +3,7 @@
 
 A simulation framework  for the visualization and analysis of the effects of different recommenders systems. This simulation draws mainly on the work of Fleder and Hosanagar (2017). To account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. The simulation models two main components: users (preferences and behavior) and items (article content, publishing habits). Users interact with items and are recommended items based on their interaction.
 
-## Usage
+## 1. Usage
 
 After all the dependencies have been installed, run SIREN:
 
@@ -11,9 +11,25 @@ After all the dependencies have been installed, run SIREN:
 python3 simulation.py
 ```
 An interface similar to the one below will be presented:
+
 ![Alt text](images/interface.png?raw=true "Interface")
 
-The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. A number of variables are only accessed through the code itself. The whole list of variables (and whether they can be adjusted via the GUI) are presented in the tables below:
+The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. The default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper).
+
+#### 1.1 Recommendation settings
+
+The left-most form controls the recommendation settings.
+
+|          | GUI Adjustable | Description |
+| ---      |  :---:        | ---         |
+|          |      +     |  Number of recommended articles per user per iteration.           |
+|  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
+|          |            |  Ranking-based decay of recommender salience     |
+|          |       +     |  Number of simulation iterations per recommender      |
+
+
+#### 1.1 User settings
+A number of variables are only accessed through the code itself. The whole list of variables (and whether they can be adjusted via the GUI) are presented in the tables below:
 
 
 |          | GUI Adjustable| Description |
@@ -26,14 +42,8 @@ The interface gives access to certain recommendation/article/user variables, suc
 |          |            |  Choice model: the user’s sensitivity to distance on the map      |
 |          |            |  User-drift: user’s sensitivity to distance on the map      |
 |          |            |  User-drift: distance covered between the article and user       |
-|          |            |  Amount of articles read per iteration per user (session size)       |
+|          |       +     |  Amount of articles read per iteration per user (session size)       |
 
-|          | GUI Adjustable | Description |
-| ---      |  :---:        | ---         |
-|          |      +     |  Number of recommended articles per user per iteration.           |
-|  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
-|          |            |  Ranking-based decay of recommender salience     |
-|          |       +     |  Number of simulation iterations per recommender      |
 
 |          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
