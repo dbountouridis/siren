@@ -8,16 +8,8 @@ and items (article content, publishing habits). Users interact with items and ar
 based on their interaction.
 
 Example:
-	An example 30 sim iterations for 200 users interacting with 100 items per iteration. Five 
-	algorithms are of interest in this case Random,WeightedBPRMF,ItemKNN,MostPopular and UserKNN:
+	$ python3 simulation.py 
 
-	$ python3 simulation.py -d 5 -u 200 -i 30 -t 100 -s 2 
-	-r "Random,WeightedBPRMF,ItemKNN,MostPopular,UserKNN" 
-	-f "temp" -n 5 -p 0.6 -N 6 -w "0.2,0.2,0.2,0.2,0.2" 
-	-g "0.05,0.07,0.03,0.85,0.01"
-
-Todo:
-	* Add data export function.
 
 """
 
