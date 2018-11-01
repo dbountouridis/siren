@@ -18,7 +18,7 @@ The interface gives access to certain recommendation/article/user variables, suc
 
 #### 1.1 Recommendation settings
 
-The left-most form controls the recommendation settings.
+The left-most form controls the recommendation settings. The most important variable is the recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. Other variables include the number and the prominence of the recommended items presented to the simulated users.
 
 |          | GUI Adjustable | Description |
 | ---      |  :---:        | ---         |
