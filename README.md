@@ -4,10 +4,13 @@
 A simulation framework  for the visualization and analysis of the effects of different recommenders systems. This simulation draws mainly on the work of Fleder and Hosanagar (2017). To account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. The simulation models two main components: users (preferences and behavior) and items (article content, publishing habits). Users interact with items and are recommended items based on their interaction.
 
 
-|          | Variable  | Adjustable | Description |
-| ---      | ---       | ---        | ---         |
-|          |           |            |             |
-|          |           |            |             |
+|          | Adjustable | Description |
+| ---      | ---        | ---         |
+|          |      +     |  Total number of active, daily users/readers.           |
+|          |            |  Awareness decay with distance       |
+|          |            |  Awareness decay with article prominence      |
+|          |      +      |  Awareness weight placed on prominent versus neighborhood articles      |
+|          |            |  Awareness decay with article prominence      |
 
 ## Citation
 
