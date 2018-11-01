@@ -1,7 +1,7 @@
 # Siren: A Simulation Framework for Understanding the Effects of Recommender Systems in Online News Environments
 
 
-A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news enviroment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, to account for the specificities of news consumption, it includes both users preferences and editorial priming as they interact in a news-webpage context. 
+A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news enviroment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, SIREN also accounts for the specificities of news consumption, such as evolving users preferences and editorial priming (promoted articles on a news website). 
 
 SIREN's interface currently offers recommendations based the [MyMediaLite](www.mymedialite.net/) toolbox and visualizations for two diversity metrics (long-tail and unexpectedness). SIREN can be used by content providers (news outlets) to investigate which recommendation strategy fits better their diversity needs. At the same time, SIREN's code can be adapted/expanced by researchers to analyse various recommender effects in a news environment.
 
