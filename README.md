@@ -30,7 +30,16 @@ The left-most form controls the recommendation settings. The most important vari
 |          |       +     |  Number of simulation iterations per recommender      |
 
 
+#### 1.2 Article settings
 
+The middle form controls the articles settings i.e., the content-provider's intent: what the content-provider wants users to read. The variables include the number of new articles published per day, the distribution of topics among articles and the prominence of each topic (how likely it is for a topic to appear on the top news page). The default settings correspond to a content-provider with focus on politics. 
+
+|          | GUI Adjustable | Description |
+| ---      |  :---:        | ---         |
+|          |      +     |  Total number of articles (number of iterations x articles per day)           |
+|  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
+|          |       +     |  Awareness: initial article prominence per topic     |
+|          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
 #### 1.1 User settings
 A number of variables are only accessed through the code itself. The whole list of variables (and whether they can be adjusted via the GUI) are presented in the tables below:
@@ -49,12 +58,7 @@ A number of variables are only accessed through the code itself. The whole list 
 |          |       +     |  Amount of articles read per iteration per user (session size)       |
 
 
-|          | GUI Adjustable | Description |
-| ---      |  :---:        | ---         |
-|          |      +     |  Total number of articles (number of iterations x articles per day)           |
-|  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
-|          |       +     |  Awareness: initial article prominence per topic     |
-|          |            |  Awareness weight placed on prominent versus neighborhood articles      |
+
 
 ## Overview
 
