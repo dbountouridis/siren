@@ -13,8 +13,7 @@ We start with the user settings. As a content provider, you should at least know
 1. How many active readers visit your news website per day. Active readers are those that receive personalized recommendations and actively read content almost every day. 
 2. How many articles in average your readers read per day.
 
-It should be noted that for a high  number of readers (e.g., more than 500), the simulation will take a long time to conclude. 
-
+The answers to these questions should allow you to set the following variables on the interface:
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/users.png?raw=true "users")
 
 
