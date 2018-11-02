@@ -4,6 +4,8 @@ Most related works interested in the recommender effects consider the interactio
 
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/washingtonpost.png?raw=true "washingtopost")
 
+### Conceptual model
+
 SIREN assumes a typical news consumption scenario where users/readers distribute their reading time between preferred/sought out articles (e.g., a sports fan would seek out the sports news), editorially-promoted articles (e.g., stories appearing in the headlines) and recommended articles. 
 
 SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute/topic space as seen  below. Users are represented as crosses "+" while articles as circles. The users' preferences and articles' content are defined by their position in relation to the topical centers (politics, sports, technology, entertainment, business). For example, users close to the "politics" center are more interested in politics than other topics. At the same time, each article is promoted to a certain degree by the news editors (visualized as the circles' size).
