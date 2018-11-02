@@ -1,9 +1,9 @@
 # Siren: A Simulation Framework for Understanding the Effects of Recommender Systems in Online News Environments
 
 
-A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news enviroment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, SIREN also accounts for the specificities of news consumption, such as evolving users preferences and editorial priming (promoted articles on a news website). 
+A simulation framework for the visualization and analysis of the effects of different recommenders systems in an online news environment. This simulation draws mainly on the e-commerce simulation work of Fleder and Hosanagar (2017). However, SIREN also accounts for the specificities of news consumption, such as evolving users preferences and editorial priming (promoted articles on a news website). 
 
-SIREN's interface currently offers recommendations based the [MyMediaLite](www.mymedialite.net/) toolbox and visualizations for two diversity metrics (long-tail and unexpectedness). SIREN can be used by content providers (news outlets) to investigate which recommendation strategy fits better their diversity needs. At the same time, SIREN's code can be adapted/expanced by researchers to analyse various recommender effects in a news environment.
+SIREN's interface currently offers recommendations based the [MyMediaLite](www.mymedialite.net/) toolbox and visualizations for two diversity metrics (long-tail and unexpectedness). SIREN can be used by content providers (news outlets) to investigate which recommendation strategy fits better their diversity needs. At the same time, SIREN's code can be adapted/expanded by researchers to analyse various recommender effects in a news environment.
 
 
 ## Overview
@@ -55,8 +55,8 @@ The middle form controls the articles settings i.e., the content-provider's inte
 |          |       +     |  Awareness: initial article prominence per topic     |
 |          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
-#### 1.1 User settings
-A number of variables are only accessed through the code itself. The whole list of variables (and whether they can be adjusted via the GUI) are presented in the tables below:
+#### 1.3 User settings
+The right-most form controls the users (readers) settings, including the number of active daily readers, the amount of articles they read and their focus on sought out vs editorially-promoted articles. Other variables related to the users' behavior can only be accessed via SIREN's code.
 
 
 |          | GUI Adjustable| Description |
