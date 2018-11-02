@@ -4,7 +4,7 @@ This documentation is for content providers that want to use SIREN to investigat
 
 First of all, when running SIREN you will be first prompted with the following interface:
 
-![Alt text](images/interface.png?raw=true "Interface")
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/interface.png?raw=true "Interface")
 
 The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. The default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper). Now, let us see how to set up and run a simulation as a content provider.
 
