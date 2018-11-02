@@ -2,7 +2,7 @@
 
 SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute/topic space as seen  below:
 
-![Alt text](images/featurespace.png?raw=true "Feature space")
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/featurespace.png?raw=true "Feature space")
 
 
 Each iteration of the simulation corresponds to a news cycle (e.g., a day). Readers are aware of: 
