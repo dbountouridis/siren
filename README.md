@@ -15,6 +15,13 @@ SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articl
 
 At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
 
+## Setup
+
+The Python dependencies/requirements are listed in requirements.txt. To install the dependencies:
+
+'''
+pip3 install -r requirements.txt
+'''
 
 
 ## 1. Usage

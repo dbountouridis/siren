@@ -1,0 +1,7 @@
+numpy 
+scipy
+pandas
+sklearn
+matplotlib
+PyQt5
+
