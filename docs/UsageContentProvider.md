@@ -8,22 +8,18 @@ First of all, when running SIREN you will be first prompted with the following i
 
 The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. The default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper). Now, let us see how to set up and run a simulation as a content provider.
 
-#### User settings
-We start with the user settings. As a content provider, you should at least know:
+#### User and article settings
+In order to make use of SIREN as a content provider, you should at least know:
 1. The amount of active readers that visit your news website per day. Active readers are those that receive personalized recommendations and actively read content almost every day. 
 2. The amount of articles in average your readers read per day.
+3. The number of new articles that you publish per day.
+4. The distribution of topics among articles, e.g, how much more politics-related articles you publish compared to other topics (sports, technology, business, entertainment). 
+5. How much you promote certain topics on the headlines. The default SIREN settings correspond to a content provider with a focus on politics (e.g. CNN). However, your news outlet might be more focused on entertainment or sports.
 
-The answers to these questions should allow you to set the following variables on the interface:
+Providing this information to SIREN is easy. The answers to questions 1 and 2 should allow you to set the user variables on the interface:
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/users.png?raw=true "users")
 
-####  Article settings
-
-The middle form controls the articles settings i.e., the content-provider's intent: what you as a  content-provider wants users to read. To adjust those settings you should at least know:
-1. The number of new articles that you publish per day.
-2. The distribution of topics among articles, e.g, how much more politics-related articles you publish compared to other topics (sports, technology, business, entertainment). 
-3. How much you promote certain topics on the headlines. The default SIREN settings correspond to a content provider with a focus on politics (e.g. CNN). However, your news outlet might be more focused on entertainment or sports.
-
-The answers to these questions should allow you to set the following variables on the interface (via the tabs):
+The answers to question 3,4 and 5 should allow you to set the article variables on the interface (via the tabs):
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/articles.png?raw=true "articles")
 
 #### Recommendation settings
