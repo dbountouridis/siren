@@ -17,9 +17,11 @@ In order to make use of SIREN as a content provider, you should at least know:
 5. How much you promote certain topics on the headlines. The default SIREN settings correspond to a content provider with a focus on politics (e.g. CNN). However, your news outlet might be more focused on entertainment or sports.
 
 Providing this information to SIREN is easy. The answers to questions 1 and 2 should allow you to set the user variables on the interface:
+
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/users.png?raw=true "users")
 
 The answers to question 3,4 and 5 should allow you to set the article variables on the interface (via the tabs):
+
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/articles.png?raw=true "articles")
 
 #### Recommendation settings
