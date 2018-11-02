@@ -31,7 +31,7 @@ import json
 import metrics
 import matplotlib
 import bisect
-
+import time
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
