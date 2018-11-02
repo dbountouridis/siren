@@ -1,6 +1,6 @@
 # Overview
 
-SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute/topic space as seen  below:
+SIREN assumes that there are |U| users (i.e. readers) and |T| items (i.e. articles) placed in an 2-dimensional attribute/topic space as seen  below. Users are represented as crosses "+" while articles as circles. The users' preferences and articles' content are defined by their position in relation to the topical centers (politics, sports, technolody, entertainment, business). For example, users close to the "politics" center are more interested in politics than other topics.
 
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/featurespace.png?raw=true "Feature space")
 
