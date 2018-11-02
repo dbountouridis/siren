@@ -1,6 +1,6 @@
 # Overview
 
-Most related works interested in the recommender effects consider the interaction of users/readers with the recommendations in isolation. However, such recommendations typically appear in the context of an online news environment (as seen in the screenshot from Washington Post below). Therefore, the reader's interaction with the recommendations is not completely straightforward: editors promote certain articles more than others, the recommendations have a certain visual salience, readers might change preferences over time and so on. SIREN tries to accommodate for a number of those issues such that the observed recommender effects have a better correspondence to reality.
+Most related works interested in the news recommender effects consider the interaction of users/readers with the recommendations in isolation. However, such recommendations typically appear in the context of an online news environment (as seen in the screenshot from Washington Post below). Therefore, the reader's interaction with the recommendations is not completely straightforward: editors promote certain articles more than others, the recommendations have a certain visual salience, readers might change preferences over time and so on. SIREN tries to accommodate for a number of those issues such that the observed recommender effects have a better correspondence to reality.
 
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/washingtonpost.png?raw=true "washingtopost")
 

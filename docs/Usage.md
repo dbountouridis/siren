@@ -1,10 +1,6 @@
 # Usage
 
-After all the dependencies have been installed, run SIREN:
 
-```python
-python3 simulation.py
-```
 An interface similar to the one below will be presented:
 
 ![Alt text](images/interface.png?raw=true "Interface")
