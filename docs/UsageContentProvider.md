@@ -23,7 +23,7 @@ The middle form controls the articles settings i.e., the content-provider's inte
 2. The distribution of topics among articles, e.g, how much more politics-related articles you publish compared to other topics (sports, technology, business, entertainment). 
 3. How much you promote certain topics on the headlines. The default SIREN settings correspond to a content provider with a focus on politics (e.g. CNN). However, your news outlet might be more focused on entertainment or sports.
 
-The answers to these questions should allow you to set the following variables on the interface:
+The answers to these questions should allow you to set the following variables on the interface (via the tabs):
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/articles.png?raw=true "articles")
 
 #### Recommendation settings
