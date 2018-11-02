@@ -6,7 +6,7 @@ A simulation framework for the visualization and analysis of the effects of diff
 SIREN's interface currently offers recommendations based the [MyMediaLite](www.mymedialite.net/) toolbox and visualizations for two diversity metrics (long-tail and unexpectedness). SIREN can be used by content providers (news outlets) to investigate which recommendation strategy fits better their diversity needs. At the same time, SIREN's code can be adapted/expanded by researchers to analyse various recommender effects in a news environment.
 
 This documentation provides information for:
-1. [An overview of SIREN's model](docs/Overview.md)
+1. [An overview of SIREN's conceptual model](docs/Overview.md)
 2. [Setting up and running SIREN](docs/Setup.md)
 3. [Using SIREN as researcher](docs/Setup.md)
 4. [Using SIREN as content-provider](docs/UsageContentProvider.md)
