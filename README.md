@@ -9,7 +9,7 @@ This documentation provides information for:
 1. [An overview of SIREN's model](docs/Overview.md)
 2. [Setting up and running SIREN](docs/Setup.md)
 3. [Using SIREN as researcher](docs/Setup.md)
-4. [Using SIREN as content-provider](docs/Setup.md)
+4. [Using SIREN as content-provider](docs/UsageContentProvider.md)
 
 
 ## Citation
