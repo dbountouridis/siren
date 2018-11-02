@@ -30,13 +30,8 @@ The answers to these questions should allow you to set the following variables o
 
 The left-most form controls the recommendation settings. The most important variable is the set of recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. Other variables include the number and the prominence of the recommended articles presented to the simulated users. "Days" corresponds to the number of simulation iterations that will run per recommendation algorithm.
 
-|          | GUI Adjustable | Description |
-| ---      |  :---:        | ---         |
-|          |      +     |  Number of recommended articles per user per iteration.           |
-|  Recommenders|       +     |  Factor by which distance decreases for recommended articles (salience)       |
-|          |            |  Ranking-based decay of recommender salience     |
-|          |       +     |  Number of simulation iterations per recommender      |
 
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/recommendations.png?raw=true "articles")
 
 
 
