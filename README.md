@@ -99,4 +99,12 @@ At each iteration of the simulation, three figures are plotted as seen in the fi
 
 If you use this code, please cite the following publication:
 
-D. Bountouridis, J. Harambam, M. Makhortykh, M. Marrero, N. Tintarev, C. Hauff (2018). _SIREN: A Simulation Framework for Understanding the Effects of Recommender Systems in Online News Environments._ ACM Conference on Fairness, Accountability, and Transparency
+```
+@inproceedings{Bountouridis2018SIREN,
+    author    = { Dimitrios Bountouridis and Jaron Harambam and Mykola Makhortykh and Monica Marrero and Nava Tintarev and Claudia Hauff},
+    title     = { SIREN: A Simulation Framework for Understanding the Effects of Recommender Systems in Online News Environments },
+    booktitle = { Proceedings of the ACM Conference on Fairness, Accountability, and Transparency  (FAT*) },
+    year      = 2018
+}
+```
+
