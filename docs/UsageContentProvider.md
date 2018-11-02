@@ -15,6 +15,8 @@ We start with the user settings. As a content provider, you should at least know
 
 It should be noted that for a high  number of readers (e.g., more than 500), the simulation will take a long time to conclude. 
 
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/users.png?raw=true "users")
+
 
 
 #### Recommendation settings
