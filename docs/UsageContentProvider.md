@@ -28,7 +28,14 @@ The answers to these questions should allow you to set the following variables o
 
 #### Recommendation settings
 
-The left-most form controls the recommendation settings. The most important variable is the set of recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. Other variables include the number and the prominence of the recommended articles presented to the simulated users. "Days" corresponds to the number of simulation iterations that will run per recommendation algorithm.
+The left-most form controls the recommendation settings. The settings can be adjusted to correspond to a hypothetical scenario or your outlet's current recommendation strategy. For the latter you need to at least know:
+1. Your current recommendation strategy/algorithm. The most typical strategies are ItemKNN, UserKNN, or ItemAttributeKNN.
+2. The amount of recommended articles that your readers receive daily.
+
+ The most important variable is the set of recommendation [MyMediaLite](www.mymedialite.net/) algorithms that will be run on the simulation. As a content provider you might be already using a specific algorithm that you might want to compare to others. Or you might be thinking of providing recommendations and you might be wondering which algorithm to choose. Whatever the case, SIREN lets you compare different algorithms on the same contolled setting.
+
+
+ Other variables include the number and the prominence of the recommended articles presented to the simulated users. "Days" corresponds to the number of simulation iterations that will run per recommendation algorithm.
 
 
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/recommendations.png?raw=true "articles")
