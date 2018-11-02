@@ -10,13 +10,21 @@ The interface gives access to certain recommendation/article/user variables, suc
 
 #### User settings
 We start with the user settings. As a content provider, you should at least know:
-1. How many active readers visit your news website per day. Active readers are those that receive personalized recommendations and actively read content almost every day. 
-2. How many articles in average your readers read per day.
+1. The amount of active readers that visit your news website per day. Active readers are those that receive personalized recommendations and actively read content almost every day. 
+2. The amount of articles in average your readers read per day.
 
 The answers to these questions should allow you to set the following variables on the interface:
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/users.png?raw=true "users")
 
+####  Article settings
 
+The middle form controls the articles settings i.e., the content-provider's intent: what you as a  content-provider wants users to read. To adjust those settings you should at least know:
+1. The number of new articles that you publish per day.
+2. The distribution of topics among articles, e.g, how much more politics-related articles you publish compared to other topics (sports, technology, business, entertainment). 
+3. How much you promote certain topics on the headlines. The default SIREN settings correspond to a content provider with a focus on politics (e.g. CNN). However, your news outlet might be more focused on entertainment or sports.
+
+The answers to these questions should allow you to set the following variables on the interface:
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/articles.png?raw=true "articles")
 
 #### Recommendation settings
 
@@ -30,16 +38,8 @@ The left-most form controls the recommendation settings. The most important vari
 |          |       +     |  Number of simulation iterations per recommender      |
 
 
-####  Article settings
 
-The middle form controls the articles settings i.e., the content-provider's intent: what the content-provider wants users to read. The variables include the number of new articles published per day, the distribution of topics among articles and the prominence of each topic (how likely it is for a topic to appear in the headlines). The default settings correspond to a content-provider with focus on politics. 
 
-|          | GUI Adjustable | Description |
-| ---      |  :---:        | ---         |
-|          |      +     |  Total number of articles (number of iterations x articles per day)           |
-|  Articles|       +     |  Percentage of articles added per day/iteration per topic      |
-|          |       +     |  Awareness: initial article prominence per topic     |
-|          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
 
 
