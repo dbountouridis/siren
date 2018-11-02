@@ -56,7 +56,7 @@ The middle form controls the articles settings i.e., the content-provider's inte
 |          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
 #### 1.3 User settings
-The right-most form controls the users (readers) settings, including the number of active daily readers, the amount of articles they read and their focus on sought out vs editorially-promoted articles. Other variables related to the users' behavior can only be accessed via SIREN's code.
+The right-most form controls the users (readers) settings, including the number of active daily readers, the amount of articles they read and their focus on sought out vs editorially-promoted articles. The default settings correspond to an average reading behavior of online news. Other variables related to the users' behavior can only be accessed via SIREN's code. It should be noted that for a high  number of users (e.g., more than 500), the simulation will take a long time to conclude. 
 
 
 |          | GUI Adjustable| Description |
@@ -70,6 +70,10 @@ The right-most form controls the users (readers) settings, including the number 
 |          |            |  User-drift: user’s sensitivity to distance on the map      |
 |          |            |  User-drift: distance covered between the article and user       |
 |          |       +     |  Amount of articles read per iteration per user (session size)       |
+
+#### 1.4 Simulation
+
+By clicking on "Start", and after adjusting the settings for the recommendations/articles/users, the simulation will initiate. In order to deal with the cold-start problem, the simulation firsts run a "Control" period where the simulated users read articles without recommendations.
 
 
 
