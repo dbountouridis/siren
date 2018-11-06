@@ -1,4 +1,4 @@
-# Usage
+# Usage as a researcher
 
 We have identified two SIREN usage scenarios for researchers:
 1. Use SIREN's interface to adjust the provided parameters and perform controlled experiments. 
