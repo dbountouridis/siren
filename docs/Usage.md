@@ -1,15 +1,14 @@
 # Usage
 
 We have identified two SIREN usage scenarios for researchers:
-1. Use SIREN's interface to adjust the provided variables and perform controlled experiments. 
+1. Use SIREN's interface to adjust the provided settings and perform controlled experiments. 
 2. Use SIREN's code to adjust even more parameters related to recommendations/articles/user behavior.
 
-An interface similar to the one below will be presented:
+The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. However, some researchers might find the collection of ajustable parameters limited. As such, SIREN's code allows for a greater control on variables such as the likelihood of reading an article at the top versus the bottom of a recommendation list. It should be mentioned that the default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper). 
 
-![Alt text](images/interface.png?raw=true "Interface")
+The next sections aim to briefly describe all adjustable parameters provided by SIREN's interface and code.
 
-The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. The default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper).
-
+![Alt text](https://github.com/dbountouridis/siren/blob/master/images/interface.png?raw=true "Interface")
 
 
 #### Recommendation settings
