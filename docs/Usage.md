@@ -1,7 +1,7 @@
 # Usage
 
 We have identified two SIREN usage scenarios for researchers:
-1. Use SIREN's interface to adjust the provided settings and perform controlled experiments. 
+1. Use SIREN's interface to adjust the provided parameters and perform controlled experiments. 
 2. Use SIREN's code to adjust even more parameters related to recommendations/articles/user behavior.
 
 The interface gives access to certain recommendation/article/user variables, such as the recommendation algorithms to be investigated, the amount of simulated users, the distribution of topics among the simulated articles and so on. However, some researchers might find the collection of ajustable parameters limited. As such, SIREN's code allows for a greater control on variables such as the likelihood of reading an article at the top versus the bottom of a recommendation list. It should be mentioned that the default settings correspond to a typical news environment (for the reasoning behind the default settings please refer to the corresponding paper). 
@@ -22,6 +22,7 @@ The left-most form controls the recommendation settings. The most important vari
 |          |            |  Ranking-based decay of recommender salience     |
 |          |       +     |  Number of simulation iterations per recommender      |
 
+Inside SIREN's code, these functions and parameters are encapsulated in the "Recommendations" class. 
 
 ####  Article settings
 
@@ -34,8 +35,10 @@ The middle form controls the articles settings i.e., the content-provider's inte
 |          |       +     |  Awareness: initial article prominence per topic     |
 |          |            |  Awareness weight placed on prominent versus neighborhood articles      |
 
+Inside SIREN's code, these functions and parameters are encapsulated in the "Items" class. 
+
 #### User settings
-The right-most form controls the users (readers) settings, including the number of active daily readers, the amount of articles they read and their focus on sought out vs editorially-promoted articles. The default settings correspond to an average reading behavior of online news. Other variables related to the users' behavior can only be accessed via SIREN's code. It should be noted that for a high  number of users (e.g., more than 500), the simulation will take a long time to conclude. 
+The right-most form controls the users (readers) settings, including the number of active daily readers, the amount of articles they read and their focus on sought out vs editorially-promoted articles. The default settings correspond to an average reading behavior of online news. It should be mentioned, that most of the user settings are only accessible through the code itself.
 
 
 |          | GUI Adjustable| Description |
@@ -50,6 +53,8 @@ The right-most form controls the users (readers) settings, including the number 
 |          |            |  User-drift: distance covered between the article and user       |
 |          |       +     |  Amount of articles read per iteration per user (session size)       |
 
+Inside SIREN's code, these functions and parameters are encapsulated in the "Users" class. 
+
 #### Simulation
 
 By clicking on "Start", and after adjusting the settings for the recommendations/articles/users, the simulation will initiate. In order to deal with the cold-start problem, the simulation firsts run a "Control" period where the simulated users read articles without recommendations. The state of the simulation (e.g., reading history) after the "Control" is used as the common starting point for the all the recommendation algorithms.
@@ -57,6 +62,10 @@ By clicking on "Start", and after adjusting the settings for the recommendations
 At each iteration of the simulation, three figures are plotted as seen in the figure below: long-tail diversity, unexpectedness diversity and the distribution of topics among the read articles so far. Due to the evolving user preferences, the recommendation algorithms might have different effects on the diversity and topic distribution.
 
 ![Alt text](images/figures.png?raw=true "Figures")
+
+Inside SIREN's code, these functions and parameters are encapsulated in the "SimulationGUI" class.
+
+
 
 
 
