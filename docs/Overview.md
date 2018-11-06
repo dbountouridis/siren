@@ -18,4 +18,4 @@ Each iteration of the simulation corresponds to a news cycle (e.g., a day). At e
 2. promoted articles by the editors (as they appear on the news website)
 3. personalized recommended articles
 
-At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span.
+At each iteration, each user decides to read a number of unique articles from those they are aware of. At the end of each iteration, the users’ preferences are updated. The article pool and the personalized recommendations are also updated at every iteration, while each article has a limited life-span. The simulation finishes after a pre-defined a number of iterations/days.

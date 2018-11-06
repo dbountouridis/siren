@@ -59,6 +59,13 @@ Inside SIREN's code, these functions and parameters are encapsulated in the "Use
 
 In order to deal with the cold-start problem, the simulation firsts run a "Control" period where the simulated users read articles without recommendations. The state of the simulation (e.g., reading history) after the "Control" is used as the common starting point for the all the recommendation algorithms.
 
+```
+                  Reading history    /---->  Recommendation algorithm 1
+Control period => User preferences ------->  Recommendation algorithm ...
+                  Articles           \---->  Recommendation algorithm n
+
+```
+
 At each iteration of the simulation, SIREN computes three metrics to be plotted as seen in the figure below: long-tail diversity, unexpectedness diversity and the distribution of topics among the read articles so far. 
 
 ![Alt text](https://github.com/dbountouridis/siren/blob/master/images/figures.png?raw=true "Figures")
