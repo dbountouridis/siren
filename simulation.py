@@ -53,6 +53,11 @@ else:
 		FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 
+from pycallgraph import PyCallGraph
+from pycallgraph import Config
+from pycallgraph.output import GraphvizOutput
+from pycallgraph import GlobbingFilter
+
 __author__ = 'Dimitrios  Bountouridis'
 
 def cdf(weights):
@@ -1008,17 +1013,32 @@ class SimulationGUI(QDialog):
 		os.makedirs(self.settings["outfolder"])
 
 		# Initialize with settings
-		print(self.settings)
-		self.initWithSettings()
+		graphviz = GraphvizOutput()
+		graphviz.output_file = "graph.png"
+		config = Config()
+		config.trace_filter = GlobbingFilter(exclude=[
+			'scipy.*',
+			'numpy.*',
+			'sklearn.*',
+			'pycallgraph.*',
+			'chi2_gen',
+			'cdf',
+			'_new_'
+		])
+   
 
-		# Pass the function to execute
-		worker = Worker(self.runSimulation) # Any other args, kwargs are passed to the run function
-		worker.signals.result.connect(self.print_output)
-		worker.signals.finished.connect(self.simulation_complete)
-		worker.signals.progress.connect(self.progress_fn)
+		with PyCallGraph(config=config, output=graphviz):
+			print(self.settings)
+			self.initWithSettings()
 
-		# Execute
-		self.threadpool.start(worker)
+			# Pass the function to execute
+			worker = Worker(self.runSimulation) # Any other args, kwargs are passed to the run function
+			worker.signals.result.connect(self.print_output)
+			worker.signals.finished.connect(self.simulation_complete)
+			worker.signals.progress.connect(self.progress_fn)
+
+			# Execute
+			self.threadpool.start(worker)
 
 
 	"""
