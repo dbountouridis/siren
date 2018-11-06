@@ -1,5 +1,8 @@
 # Usage
 
+We have identified two SIREN usage scenarios for researchers:
+1. Use SIREN's interface to adjust the provided variables and perform controlled experiments. 
+2. Use SIREN's code to adjust even more parameters related to recommendations/articles/user behavior.
 
 An interface similar to the one below will be presented:
 

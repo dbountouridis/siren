@@ -10,7 +10,7 @@ SIREN's interface currently offers recommendations based the [MyMediaLite](www.m
 This documentation provides information for:
 1. [An overview of SIREN's conceptual model](docs/Overview.md)
 2. [Setting up and running SIREN](docs/Setup.md)
-3. [Using SIREN as researcher](docs/Setup.md)
+3. [Using SIREN as researcher](docs/Usage.md)
 4. [Using SIREN as content-provider](docs/UsageContentProvider.md)
 
 
